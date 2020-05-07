@@ -35,5 +35,5 @@ and run
 
 	`finish_freezing --library`
 
-It will copy the C lib `eif_libquirc.a` or `eif_libquirc.lib` under the library root `$ECF_CONFIG_PATH/C/spec/$(ISE_PLATFORM)/lib/`
+It will copy the C lib `eif_libclang.a` or `eif_libclang.lib` under the library root `$ECF_CONFIG_PATH/C/spec/$(ISE_PLATFORM)/lib/`
 
