@@ -12,16 +12,22 @@ feature -- Access
 	clang_get_cstring (string: CXSTRING_STRUCT_API): POINTER 
 		do
 			Result := c_clang_get_cstring (string.item)
+		ensure
+			instance_free: class
 		end
 
 	clang_dispose_string (string: CXSTRING_STRUCT_API) 
 		do
 			c_clang_dispose_string (string.item)
+		ensure
+			instance_free: class
 		end
 
 	clang_dispose_string_set (set: CXSTRING_SET_STRUCT_API) 
 		do
 			c_clang_dispose_string_set (set.item)
+		ensure
+			instance_free: class
 		end
 
 feature -- Externals

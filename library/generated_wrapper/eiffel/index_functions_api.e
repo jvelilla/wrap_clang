@@ -18,259 +18,343 @@ feature -- Access
 			]"
 		end
 
-	clang_dispose_index (index: POINTER)
+	clang_dispose_index (index: POINTER) 
 		do
 			c_clang_dispose_index (index)
+		ensure
+			instance_free: class
 		end
 
-	clang_cxindex_set_global_options (anonymous_1: POINTER; options: INTEGER)
+	clang_cxindex_set_global_options (anonymous_1: POINTER; options: INTEGER) 
 		do
 			c_clang_cxindex_set_global_options (anonymous_1, options)
+		ensure
+			instance_free: class
 		end
 
-	clang_cxindex_get_global_options (anonymous_1: POINTER): INTEGER
+	clang_cxindex_get_global_options (anonymous_1: POINTER): INTEGER 
 		do
 			Result := c_clang_cxindex_get_global_options (anonymous_1)
+		ensure
+			instance_free: class
 		end
 
-	clang_cxindex_set_invocation_emission_path_option (anonymous_1: POINTER; path: STRING)
+	clang_cxindex_set_invocation_emission_path_option (anonymous_1: POINTER; path: STRING) 
 		local
 			path_c_string: C_STRING
 		do
 			create path_c_string.make (path)
 			c_clang_cxindex_set_invocation_emission_path_option (anonymous_1, path_c_string.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_file_name (sfile: POINTER): detachable CXSTRING_STRUCT_API
+	clang_get_file_name (sfile: POINTER): detachable CXSTRING_STRUCT_API 
 		do
 			if attached c_clang_get_file_name (sfile) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_get_file_time (sfile: POINTER): INTEGER
+	clang_get_file_time (sfile: POINTER): INTEGER 
 		do
 			Result := c_clang_get_file_time (sfile)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_file_unique_id (file: POINTER; outid: CXFILE_UNIQUE_ID_STRUCT_API): INTEGER
+	clang_get_file_unique_id (file: POINTER; outid: CXFILE_UNIQUE_ID_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_get_file_unique_id (file, outid.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_is_file_multiple_include_guarded (tu: CXTRANSLATION_UNIT_IMPL_STRUCT_API; file: POINTER): INTEGER
+	clang_is_file_multiple_include_guarded (tu: CXTRANSLATION_UNIT_IMPL_STRUCT_API; file: POINTER): INTEGER 
 		do
 			Result := c_clang_is_file_multiple_include_guarded (tu.item, file)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_file (tu: CXTRANSLATION_UNIT_IMPL_STRUCT_API; file_name: STRING): POINTER
+	clang_get_file (tu: CXTRANSLATION_UNIT_IMPL_STRUCT_API; file_name: STRING): POINTER 
 		local
 			file_name_c_string: C_STRING
 		do
 			create file_name_c_string.make (file_name)
 			Result := c_clang_get_file (tu.item, file_name_c_string.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_file_contents (tu: CXTRANSLATION_UNIT_IMPL_STRUCT_API; file: POINTER; size: POINTER): POINTER
+	clang_get_file_contents (tu: CXTRANSLATION_UNIT_IMPL_STRUCT_API; file: POINTER; size: POINTER): POINTER 
 		do
 			Result := c_clang_get_file_contents (tu.item, file, size)
+		ensure
+			instance_free: class
 		end
 
-	clang_file_is_equal (file1: POINTER; file2: POINTER): INTEGER
+	clang_file_is_equal (file1: POINTER; file2: POINTER): INTEGER 
 		do
 			Result := c_clang_file_is_equal (file1, file2)
+		ensure
+			instance_free: class
 		end
 
-	clang_file_try_get_real_path_name (file: POINTER): detachable CXSTRING_STRUCT_API
+	clang_file_try_get_real_path_name (file: POINTER): detachable CXSTRING_STRUCT_API 
 		do
 			if attached c_clang_file_try_get_real_path_name (file) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_get_null_location: detachable CXSOURCE_LOCATION_STRUCT_API
+	clang_get_null_location: detachable CXSOURCE_LOCATION_STRUCT_API 
 		do
 			if attached c_clang_get_null_location as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_equal_locations (loc1: CXSOURCE_LOCATION_STRUCT_API; loc2: CXSOURCE_LOCATION_STRUCT_API): INTEGER
+	clang_equal_locations (loc1: CXSOURCE_LOCATION_STRUCT_API; loc2: CXSOURCE_LOCATION_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_equal_locations (loc1.item, loc2.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_location (tu: CXTRANSLATION_UNIT_IMPL_STRUCT_API; file: POINTER; line: INTEGER; column: INTEGER): detachable CXSOURCE_LOCATION_STRUCT_API
+	clang_get_location (tu: CXTRANSLATION_UNIT_IMPL_STRUCT_API; file: POINTER; line: INTEGER; column: INTEGER): detachable CXSOURCE_LOCATION_STRUCT_API 
 		do
 			if attached c_clang_get_location (tu.item, file, line, column) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_get_location_for_offset (tu: CXTRANSLATION_UNIT_IMPL_STRUCT_API; file: POINTER; offset: INTEGER): detachable CXSOURCE_LOCATION_STRUCT_API
+	clang_get_location_for_offset (tu: CXTRANSLATION_UNIT_IMPL_STRUCT_API; file: POINTER; offset: INTEGER): detachable CXSOURCE_LOCATION_STRUCT_API 
 		do
 			if attached c_clang_get_location_for_offset (tu.item, file, offset) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_location_is_in_system_header (location: CXSOURCE_LOCATION_STRUCT_API): INTEGER
+	clang_location_is_in_system_header (location: CXSOURCE_LOCATION_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_location_is_in_system_header (location.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_location_is_from_main_file (location: CXSOURCE_LOCATION_STRUCT_API): INTEGER
+	clang_location_is_from_main_file (location: CXSOURCE_LOCATION_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_location_is_from_main_file (location.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_null_range: detachable CXSOURCE_RANGE_STRUCT_API
+	clang_get_null_range: detachable CXSOURCE_RANGE_STRUCT_API 
 		do
 			if attached c_clang_get_null_range as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_get_range (begin: CXSOURCE_LOCATION_STRUCT_API; a_end: CXSOURCE_LOCATION_STRUCT_API): detachable CXSOURCE_RANGE_STRUCT_API
+	clang_get_range (begin: CXSOURCE_LOCATION_STRUCT_API; a_end: CXSOURCE_LOCATION_STRUCT_API): detachable CXSOURCE_RANGE_STRUCT_API 
 		do
 			if attached c_clang_get_range (begin.item, a_end.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_equal_ranges (range1: CXSOURCE_RANGE_STRUCT_API; range2: CXSOURCE_RANGE_STRUCT_API): INTEGER
+	clang_equal_ranges (range1: CXSOURCE_RANGE_STRUCT_API; range2: CXSOURCE_RANGE_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_equal_ranges (range1.item, range2.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_range_is_null (range: CXSOURCE_RANGE_STRUCT_API): INTEGER
+	clang_range_is_null (range: CXSOURCE_RANGE_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_range_is_null (range.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_expansion_location (location: CXSOURCE_LOCATION_STRUCT_API; file: POINTER; line: POINTER; column: POINTER; offset: POINTER)
+	clang_get_expansion_location (location: CXSOURCE_LOCATION_STRUCT_API; file: POINTER; line: POINTER; column: POINTER; offset: POINTER) 
 		do
 			c_clang_get_expansion_location (location.item, file, line, column, offset)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_presumed_location (location: CXSOURCE_LOCATION_STRUCT_API; filename: CXSTRING_STRUCT_API; line: POINTER; column: POINTER)
+	clang_get_presumed_location (location: CXSOURCE_LOCATION_STRUCT_API; filename: CXSTRING_STRUCT_API; line: POINTER; column: POINTER) 
 		do
 			c_clang_get_presumed_location (location.item, filename.item, line, column)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_instantiation_location (location: CXSOURCE_LOCATION_STRUCT_API; file: POINTER; line: POINTER; column: POINTER; offset: POINTER)
+	clang_get_instantiation_location (location: CXSOURCE_LOCATION_STRUCT_API; file: POINTER; line: POINTER; column: POINTER; offset: POINTER) 
 		do
 			c_clang_get_instantiation_location (location.item, file, line, column, offset)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_spelling_location (location: CXSOURCE_LOCATION_STRUCT_API; file: POINTER; line: POINTER; column: POINTER; offset: POINTER)
+	clang_get_spelling_location (location: CXSOURCE_LOCATION_STRUCT_API; file: POINTER; line: POINTER; column: POINTER; offset: POINTER) 
 		do
 			c_clang_get_spelling_location (location.item, file, line, column, offset)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_file_location (location: CXSOURCE_LOCATION_STRUCT_API; file: POINTER; line: POINTER; column: POINTER; offset: POINTER)
+	clang_get_file_location (location: CXSOURCE_LOCATION_STRUCT_API; file: POINTER; line: POINTER; column: POINTER; offset: POINTER) 
 		do
 			c_clang_get_file_location (location.item, file, line, column, offset)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_range_start (range: CXSOURCE_RANGE_STRUCT_API): detachable CXSOURCE_LOCATION_STRUCT_API
+	clang_get_range_start (range: CXSOURCE_RANGE_STRUCT_API): detachable CXSOURCE_LOCATION_STRUCT_API 
 		do
 			if attached c_clang_get_range_start (range.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_get_range_end (range: CXSOURCE_RANGE_STRUCT_API): detachable CXSOURCE_LOCATION_STRUCT_API
+	clang_get_range_end (range: CXSOURCE_RANGE_STRUCT_API): detachable CXSOURCE_LOCATION_STRUCT_API 
 		do
 			if attached c_clang_get_range_end (range.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_get_skipped_ranges (tu: CXTRANSLATION_UNIT_IMPL_STRUCT_API; file: POINTER): detachable CXSOURCE_RANGE_LIST_STRUCT_API
+	clang_get_skipped_ranges (tu: CXTRANSLATION_UNIT_IMPL_STRUCT_API; file: POINTER): detachable CXSOURCE_RANGE_LIST_STRUCT_API 
 		do
 			if attached c_clang_get_skipped_ranges (tu.item, file) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_get_all_skipped_ranges (tu: CXTRANSLATION_UNIT_IMPL_STRUCT_API): detachable CXSOURCE_RANGE_LIST_STRUCT_API
+	clang_get_all_skipped_ranges (tu: CXTRANSLATION_UNIT_IMPL_STRUCT_API): detachable CXSOURCE_RANGE_LIST_STRUCT_API 
 		do
 			if attached c_clang_get_all_skipped_ranges (tu.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_dispose_source_range_list (ranges: CXSOURCE_RANGE_LIST_STRUCT_API)
+	clang_dispose_source_range_list (ranges: CXSOURCE_RANGE_LIST_STRUCT_API) 
 		do
 			c_clang_dispose_source_range_list (ranges.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_num_diagnostics_in_set (diags: POINTER): INTEGER
+	clang_get_num_diagnostics_in_set (diags: POINTER): INTEGER 
 		do
 			Result := c_clang_get_num_diagnostics_in_set (diags)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_diagnostic_in_set (diags: POINTER; index: INTEGER): POINTER
+	clang_get_diagnostic_in_set (diags: POINTER; index: INTEGER): POINTER 
 		do
 			Result := c_clang_get_diagnostic_in_set (diags, index)
+		ensure
+			instance_free: class
 		end
 
-	clang_load_diagnostics (file: STRING; error: POINTER; errorstring: CXSTRING_STRUCT_API): POINTER
+	clang_load_diagnostics (file: STRING; error: POINTER; errorstring: CXSTRING_STRUCT_API): POINTER 
 		local
 			file_c_string: C_STRING
 		do
 			create file_c_string.make (file)
 			Result := c_clang_load_diagnostics (file_c_string.item, error, errorstring.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_dispose_diagnostic_set (diags: POINTER)
+	clang_dispose_diagnostic_set (diags: POINTER) 
 		do
 			c_clang_dispose_diagnostic_set (diags)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_child_diagnostics (d: POINTER): POINTER
+	clang_get_child_diagnostics (d: POINTER): POINTER 
 		do
 			Result := c_clang_get_child_diagnostics (d)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_num_diagnostics (unit: CXTRANSLATION_UNIT_IMPL_STRUCT_API): INTEGER
+	clang_get_num_diagnostics (unit: CXTRANSLATION_UNIT_IMPL_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_get_num_diagnostics (unit.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_diagnostic (unit: CXTRANSLATION_UNIT_IMPL_STRUCT_API; index: INTEGER): POINTER
+	clang_get_diagnostic (unit: CXTRANSLATION_UNIT_IMPL_STRUCT_API; index: INTEGER): POINTER 
 		do
 			Result := c_clang_get_diagnostic (unit.item, index)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_diagnostic_set_from_tu (unit: CXTRANSLATION_UNIT_IMPL_STRUCT_API): POINTER
+	clang_get_diagnostic_set_from_tu (unit: CXTRANSLATION_UNIT_IMPL_STRUCT_API): POINTER 
 		do
 			Result := c_clang_get_diagnostic_set_from_tu (unit.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_dispose_diagnostic (diagnostic: POINTER)
+	clang_dispose_diagnostic (diagnostic: POINTER) 
 		do
 			c_clang_dispose_diagnostic (diagnostic)
+		ensure
+			instance_free: class
 		end
 
-	clang_format_diagnostic (diagnostic: POINTER; options: INTEGER): detachable CXSTRING_STRUCT_API
+	clang_format_diagnostic (diagnostic: POINTER; options: INTEGER): detachable CXSTRING_STRUCT_API 
 		do
 			if attached c_clang_format_diagnostic (diagnostic, options) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
 	clang_default_diagnostic_display_options: INTEGER
@@ -282,38 +366,48 @@ feature -- Access
 			]"
 		end
 
-	clang_get_diagnostic_severity (anonymous_1: POINTER): INTEGER
+	clang_get_diagnostic_severity (anonymous_1: POINTER): INTEGER 
 		do
 			Result := c_clang_get_diagnostic_severity (anonymous_1)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_diagnostic_location (anonymous_1: POINTER): detachable CXSOURCE_LOCATION_STRUCT_API
+	clang_get_diagnostic_location (anonymous_1: POINTER): detachable CXSOURCE_LOCATION_STRUCT_API 
 		do
 			if attached c_clang_get_diagnostic_location (anonymous_1) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_get_diagnostic_spelling (anonymous_1: POINTER): detachable CXSTRING_STRUCT_API
+	clang_get_diagnostic_spelling (anonymous_1: POINTER): detachable CXSTRING_STRUCT_API 
 		do
 			if attached c_clang_get_diagnostic_spelling (anonymous_1) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_get_diagnostic_option (diag: POINTER; disable: CXSTRING_STRUCT_API): detachable CXSTRING_STRUCT_API
+	clang_get_diagnostic_option (diag: POINTER; disable: CXSTRING_STRUCT_API): detachable CXSTRING_STRUCT_API 
 		do
 			if attached c_clang_get_diagnostic_option (diag, disable.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_get_diagnostic_category (anonymous_1: POINTER): INTEGER
+	clang_get_diagnostic_category (anonymous_1: POINTER): INTEGER 
 		do
 			Result := c_clang_get_diagnostic_category (anonymous_1)
+		ensure
+			instance_free: class
 		end
 
 	clang_get_diagnostic_category_name (category: INTEGER): POINTER
@@ -328,49 +422,61 @@ feature -- Access
 			]"
 		end
 
-	clang_get_diagnostic_category_text (anonymous_1: POINTER): detachable CXSTRING_STRUCT_API
+	clang_get_diagnostic_category_text (anonymous_1: POINTER): detachable CXSTRING_STRUCT_API 
 		do
 			if attached c_clang_get_diagnostic_category_text (anonymous_1) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_get_diagnostic_num_ranges (anonymous_1: POINTER): INTEGER
+	clang_get_diagnostic_num_ranges (anonymous_1: POINTER): INTEGER 
 		do
 			Result := c_clang_get_diagnostic_num_ranges (anonymous_1)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_diagnostic_range (diagnostic: POINTER; range: INTEGER): detachable CXSOURCE_RANGE_STRUCT_API
+	clang_get_diagnostic_range (diagnostic: POINTER; range: INTEGER): detachable CXSOURCE_RANGE_STRUCT_API 
 		do
 			if attached c_clang_get_diagnostic_range (diagnostic, range) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_get_diagnostic_num_fix_its (diagnostic: POINTER): INTEGER
+	clang_get_diagnostic_num_fix_its (diagnostic: POINTER): INTEGER 
 		do
 			Result := c_clang_get_diagnostic_num_fix_its (diagnostic)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_diagnostic_fix_it (diagnostic: POINTER; fixit: INTEGER; replacementrange: CXSOURCE_RANGE_STRUCT_API): detachable CXSTRING_STRUCT_API
+	clang_get_diagnostic_fix_it (diagnostic: POINTER; fixit: INTEGER; replacementrange: CXSOURCE_RANGE_STRUCT_API): detachable CXSTRING_STRUCT_API 
 		do
 			if attached c_clang_get_diagnostic_fix_it (diagnostic, fixit, replacementrange.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_get_translation_unit_spelling (ctunit: CXTRANSLATION_UNIT_IMPL_STRUCT_API): detachable CXSTRING_STRUCT_API
+	clang_get_translation_unit_spelling (ctunit: CXTRANSLATION_UNIT_IMPL_STRUCT_API): detachable CXSTRING_STRUCT_API 
 		do
 			if attached c_clang_get_translation_unit_spelling (ctunit.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_create_translation_unit_from_source_file (cidx: POINTER; source_filename: STRING; num_clang_command_line_args: INTEGER; clang_command_line_args: POINTER; num_unsaved_files: INTEGER; unsaved_files: CXUNSAVED_FILE_STRUCT_API): detachable CXTRANSLATION_UNIT_IMPL_STRUCT_API
+	clang_create_translation_unit_from_source_file (cidx: POINTER; source_filename: STRING; num_clang_command_line_args: INTEGER; clang_command_line_args: POINTER; num_unsaved_files: INTEGER; unsaved_files: CXUNSAVED_FILE_STRUCT_API): detachable CXTRANSLATION_UNIT_IMPL_STRUCT_API 
 		local
 			source_filename_c_string: C_STRING
 		do
@@ -379,9 +485,11 @@ feature -- Access
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_create_translation_unit (cidx: POINTER; ast_filename: STRING): detachable CXTRANSLATION_UNIT_IMPL_STRUCT_API
+	clang_create_translation_unit (cidx: POINTER; ast_filename: STRING): detachable CXTRANSLATION_UNIT_IMPL_STRUCT_API 
 		local
 			ast_filename_c_string: C_STRING
 		do
@@ -390,14 +498,18 @@ feature -- Access
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_create_translation_unit2 (cidx: POINTER; ast_filename: STRING; out_tu: CXTRANSLATION_UNIT_IMPL_STRUCT_API): INTEGER
+	clang_create_translation_unit2 (cidx: POINTER; ast_filename: STRING; out_tu: CXTRANSLATION_UNIT_IMPL_STRUCT_API): INTEGER 
 		local
 			ast_filename_c_string: C_STRING
 		do
 			create ast_filename_c_string.make (ast_filename)
 			Result := c_clang_create_translation_unit2 (cidx, ast_filename_c_string.item, out_tu.item)
+		ensure
+			instance_free: class
 		end
 
 	clang_default_editing_translation_unit_options: INTEGER
@@ -409,7 +521,7 @@ feature -- Access
 			]"
 		end
 
-	clang_parse_translation_unit (cidx: POINTER; source_filename: STRING; command_line_args: POINTER; num_command_line_args: INTEGER; unsaved_files: CXUNSAVED_FILE_STRUCT_API; num_unsaved_files: INTEGER; options: INTEGER): detachable CXTRANSLATION_UNIT_IMPL_STRUCT_API
+	clang_parse_translation_unit (cidx: POINTER; source_filename: STRING; command_line_args: POINTER; num_command_line_args: INTEGER; unsaved_files: CXUNSAVED_FILE_STRUCT_API; num_unsaved_files: INTEGER; options: INTEGER): detachable CXTRANSLATION_UNIT_IMPL_STRUCT_API 
 		local
 			source_filename_c_string: C_STRING
 		do
@@ -418,742 +530,987 @@ feature -- Access
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_parse_translation_unit2 (cidx: POINTER; source_filename: STRING; command_line_args: POINTER; num_command_line_args: INTEGER; unsaved_files: CXUNSAVED_FILE_STRUCT_API; num_unsaved_files: INTEGER; options: INTEGER; out_tu: CXTRANSLATION_UNIT_IMPL_STRUCT_API): INTEGER
+	clang_parse_translation_unit2 (cidx: POINTER; source_filename: STRING; command_line_args: POINTER; num_command_line_args: INTEGER; unsaved_files: CXUNSAVED_FILE_STRUCT_API; num_unsaved_files: INTEGER; options: INTEGER; out_tu: CXTRANSLATION_UNIT_IMPL_STRUCT_API): INTEGER 
 		local
 			source_filename_c_string: C_STRING
 		do
 			create source_filename_c_string.make (source_filename)
 			Result := c_clang_parse_translation_unit2 (cidx, source_filename_c_string.item, command_line_args, num_command_line_args, unsaved_files.item, num_unsaved_files, options, out_tu.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_parse_translation_unit2full_argv (cidx: POINTER; source_filename: STRING; command_line_args: POINTER; num_command_line_args: INTEGER; unsaved_files: CXUNSAVED_FILE_STRUCT_API; num_unsaved_files: INTEGER; options: INTEGER; out_tu: CXTRANSLATION_UNIT_IMPL_STRUCT_API): INTEGER
+	clang_parse_translation_unit2full_argv (cidx: POINTER; source_filename: STRING; command_line_args: POINTER; num_command_line_args: INTEGER; unsaved_files: CXUNSAVED_FILE_STRUCT_API; num_unsaved_files: INTEGER; options: INTEGER; out_tu: CXTRANSLATION_UNIT_IMPL_STRUCT_API): INTEGER 
 		local
 			source_filename_c_string: C_STRING
 		do
 			create source_filename_c_string.make (source_filename)
 			Result := c_clang_parse_translation_unit2full_argv (cidx, source_filename_c_string.item, command_line_args, num_command_line_args, unsaved_files.item, num_unsaved_files, options, out_tu.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_default_save_options (tu: CXTRANSLATION_UNIT_IMPL_STRUCT_API): INTEGER
+	clang_default_save_options (tu: CXTRANSLATION_UNIT_IMPL_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_default_save_options (tu.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_save_translation_unit (tu: CXTRANSLATION_UNIT_IMPL_STRUCT_API; filename: STRING; options: INTEGER): INTEGER
+	clang_save_translation_unit (tu: CXTRANSLATION_UNIT_IMPL_STRUCT_API; filename: STRING; options: INTEGER): INTEGER 
 		local
 			filename_c_string: C_STRING
 		do
 			create filename_c_string.make (filename)
 			Result := c_clang_save_translation_unit (tu.item, filename_c_string.item, options)
+		ensure
+			instance_free: class
 		end
 
-	clang_suspend_translation_unit (anonymous_1: CXTRANSLATION_UNIT_IMPL_STRUCT_API): INTEGER
+	clang_suspend_translation_unit (anonymous_1: CXTRANSLATION_UNIT_IMPL_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_suspend_translation_unit (anonymous_1.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_dispose_translation_unit (anonymous_1: CXTRANSLATION_UNIT_IMPL_STRUCT_API)
+	clang_dispose_translation_unit (anonymous_1: CXTRANSLATION_UNIT_IMPL_STRUCT_API) 
 		do
 			c_clang_dispose_translation_unit (anonymous_1.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_default_reparse_options (tu: CXTRANSLATION_UNIT_IMPL_STRUCT_API): INTEGER
+	clang_default_reparse_options (tu: CXTRANSLATION_UNIT_IMPL_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_default_reparse_options (tu.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_reparse_translation_unit (tu: CXTRANSLATION_UNIT_IMPL_STRUCT_API; num_unsaved_files: INTEGER; unsaved_files: CXUNSAVED_FILE_STRUCT_API; options: INTEGER): INTEGER
+	clang_reparse_translation_unit (tu: CXTRANSLATION_UNIT_IMPL_STRUCT_API; num_unsaved_files: INTEGER; unsaved_files: CXUNSAVED_FILE_STRUCT_API; options: INTEGER): INTEGER 
 		do
 			Result := c_clang_reparse_translation_unit (tu.item, num_unsaved_files, unsaved_files.item, options)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_turesource_usage_name (kind: INTEGER): POINTER
+	clang_get_turesource_usage_name (kind: INTEGER): POINTER 
 		do
 			Result := c_clang_get_turesource_usage_name (kind)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_cxturesource_usage (tu: CXTRANSLATION_UNIT_IMPL_STRUCT_API): detachable CXTURESOURCE_USAGE_STRUCT_API
+	clang_get_cxturesource_usage (tu: CXTRANSLATION_UNIT_IMPL_STRUCT_API): detachable CXTURESOURCE_USAGE_STRUCT_API 
 		do
 			if attached c_clang_get_cxturesource_usage (tu.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_dispose_cxturesource_usage (usage: CXTURESOURCE_USAGE_STRUCT_API)
+	clang_dispose_cxturesource_usage (usage: CXTURESOURCE_USAGE_STRUCT_API) 
 		do
 			c_clang_dispose_cxturesource_usage (usage.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_translation_unit_target_info (ctunit: CXTRANSLATION_UNIT_IMPL_STRUCT_API): detachable CXTARGET_INFO_IMPL_STRUCT_API
+	clang_get_translation_unit_target_info (ctunit: CXTRANSLATION_UNIT_IMPL_STRUCT_API): detachable CXTARGET_INFO_IMPL_STRUCT_API 
 		do
 			if attached c_clang_get_translation_unit_target_info (ctunit.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_target_info_dispose (info: CXTARGET_INFO_IMPL_STRUCT_API)
+	clang_target_info_dispose (info: CXTARGET_INFO_IMPL_STRUCT_API) 
 		do
 			c_clang_target_info_dispose (info.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_target_info_get_triple (info: CXTARGET_INFO_IMPL_STRUCT_API): detachable CXSTRING_STRUCT_API
+	clang_target_info_get_triple (info: CXTARGET_INFO_IMPL_STRUCT_API): detachable CXSTRING_STRUCT_API 
 		do
 			if attached c_clang_target_info_get_triple (info.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_target_info_get_pointer_width (info: CXTARGET_INFO_IMPL_STRUCT_API): INTEGER
+	clang_target_info_get_pointer_width (info: CXTARGET_INFO_IMPL_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_target_info_get_pointer_width (info.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_null_cursor: detachable CXCURSOR_STRUCT_API
+	clang_get_null_cursor: detachable CXCURSOR_STRUCT_API 
 		do
 			if attached c_clang_get_null_cursor as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_get_translation_unit_cursor (anonymous_1: CXTRANSLATION_UNIT_IMPL_STRUCT_API): detachable CXCURSOR_STRUCT_API
+	clang_get_translation_unit_cursor (anonymous_1: CXTRANSLATION_UNIT_IMPL_STRUCT_API): detachable CXCURSOR_STRUCT_API 
 		do
 			if attached c_clang_get_translation_unit_cursor (anonymous_1.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
+
+		ensure
+			instance_free: class
 		end
 
-	clang_equal_cursors (anonymous_1: CXCURSOR_STRUCT_API; anonymous_2: CXCURSOR_STRUCT_API): INTEGER
+	clang_equal_cursors (anonymous_1: CXCURSOR_STRUCT_API; anonymous_2: CXCURSOR_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_equal_cursors (anonymous_1.item, anonymous_2.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_cursor_is_null (cursor: CXCURSOR_STRUCT_API): INTEGER
+	clang_cursor_is_null (cursor: CXCURSOR_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_cursor_is_null (cursor.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_hash_cursor (anonymous_1: CXCURSOR_STRUCT_API): INTEGER
+	clang_hash_cursor (anonymous_1: CXCURSOR_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_hash_cursor (anonymous_1.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_cursor_kind (anonymous_1: CXCURSOR_STRUCT_API): INTEGER
+	clang_get_cursor_kind (anonymous_1: CXCURSOR_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_get_cursor_kind (anonymous_1.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_is_declaration (anonymous_1: INTEGER): INTEGER
+	clang_is_declaration (anonymous_1: INTEGER): INTEGER 
 		do
 			Result := c_clang_is_declaration (anonymous_1)
+		ensure
+			instance_free: class
 		end
 
-	clang_is_invalid_declaration (anonymous_1: CXCURSOR_STRUCT_API): INTEGER
+	clang_is_invalid_declaration (anonymous_1: CXCURSOR_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_is_invalid_declaration (anonymous_1.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_is_reference (anonymous_1: INTEGER): INTEGER
+	clang_is_reference (anonymous_1: INTEGER): INTEGER 
 		do
 			Result := c_clang_is_reference (anonymous_1)
+		ensure
+			instance_free: class
 		end
 
-	clang_is_expression (anonymous_1: INTEGER): INTEGER
+	clang_is_expression (anonymous_1: INTEGER): INTEGER 
 		do
 			Result := c_clang_is_expression (anonymous_1)
+		ensure
+			instance_free: class
 		end
 
-	clang_is_statement (anonymous_1: INTEGER): INTEGER
+	clang_is_statement (anonymous_1: INTEGER): INTEGER 
 		do
 			Result := c_clang_is_statement (anonymous_1)
+		ensure
+			instance_free: class
 		end
 
-	clang_is_attribute (anonymous_1: INTEGER): INTEGER
+	clang_is_attribute (anonymous_1: INTEGER): INTEGER 
 		do
 			Result := c_clang_is_attribute (anonymous_1)
+		ensure
+			instance_free: class
 		end
 
-	clang_cursor_has_attrs (c: CXCURSOR_STRUCT_API): INTEGER
+	clang_cursor_has_attrs (c: CXCURSOR_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_cursor_has_attrs (c.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_is_invalid (anonymous_1: INTEGER): INTEGER
+	clang_is_invalid (anonymous_1: INTEGER): INTEGER 
 		do
 			Result := c_clang_is_invalid (anonymous_1)
+		ensure
+			instance_free: class
 		end
 
-	clang_is_translation_unit (anonymous_1: INTEGER): INTEGER
+	clang_is_translation_unit (anonymous_1: INTEGER): INTEGER 
 		do
 			Result := c_clang_is_translation_unit (anonymous_1)
+		ensure
+			instance_free: class
 		end
 
-	clang_is_preprocessing (anonymous_1: INTEGER): INTEGER
+	clang_is_preprocessing (anonymous_1: INTEGER): INTEGER 
 		do
 			Result := c_clang_is_preprocessing (anonymous_1)
+		ensure
+			instance_free: class
 		end
 
-	clang_is_unexposed (anonymous_1: INTEGER): INTEGER
+	clang_is_unexposed (anonymous_1: INTEGER): INTEGER 
 		do
 			Result := c_clang_is_unexposed (anonymous_1)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_cursor_linkage (cursor: CXCURSOR_STRUCT_API): INTEGER
+	clang_get_cursor_linkage (cursor: CXCURSOR_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_get_cursor_linkage (cursor.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_cursor_visibility (cursor: CXCURSOR_STRUCT_API): INTEGER
+	clang_get_cursor_visibility (cursor: CXCURSOR_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_get_cursor_visibility (cursor.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_cursor_availability (cursor: CXCURSOR_STRUCT_API): INTEGER
+	clang_get_cursor_availability (cursor: CXCURSOR_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_get_cursor_availability (cursor.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_cursor_platform_availability (cursor: CXCURSOR_STRUCT_API; always_deprecated: POINTER; deprecated_message: CXSTRING_STRUCT_API; always_unavailable: POINTER; unavailable_message: CXSTRING_STRUCT_API; availability: CXPLATFORM_AVAILABILITY_STRUCT_API; availability_size: INTEGER): INTEGER
+	clang_get_cursor_platform_availability (cursor: CXCURSOR_STRUCT_API; always_deprecated: POINTER; deprecated_message: CXSTRING_STRUCT_API; always_unavailable: POINTER; unavailable_message: CXSTRING_STRUCT_API; availability: CXPLATFORM_AVAILABILITY_STRUCT_API; availability_size: INTEGER): INTEGER 
 		do
 			Result := c_clang_get_cursor_platform_availability (cursor.item, always_deprecated, deprecated_message.item, always_unavailable, unavailable_message.item, availability.item, availability_size)
+		ensure
+			instance_free: class
 		end
 
-	clang_dispose_cxplatform_availability (availability: CXPLATFORM_AVAILABILITY_STRUCT_API)
+	clang_dispose_cxplatform_availability (availability: CXPLATFORM_AVAILABILITY_STRUCT_API) 
 		do
 			c_clang_dispose_cxplatform_availability (availability.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_cursor_language (cursor: CXCURSOR_STRUCT_API): INTEGER
+	clang_get_cursor_language (cursor: CXCURSOR_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_get_cursor_language (cursor.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_cursor_tlskind (cursor: CXCURSOR_STRUCT_API): INTEGER
+	clang_get_cursor_tlskind (cursor: CXCURSOR_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_get_cursor_tlskind (cursor.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_cursor_get_translation_unit (anonymous_1: CXCURSOR_STRUCT_API): detachable CXTRANSLATION_UNIT_IMPL_STRUCT_API
+	clang_cursor_get_translation_unit (anonymous_1: CXCURSOR_STRUCT_API): detachable CXTRANSLATION_UNIT_IMPL_STRUCT_API 
 		do
 			if attached c_clang_cursor_get_translation_unit (anonymous_1.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_create_cxcursor_set: detachable CXCURSOR_SET_IMPL_STRUCT_API
+	clang_create_cxcursor_set: detachable CXCURSOR_SET_IMPL_STRUCT_API 
 		do
 			if attached c_clang_create_cxcursor_set as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_dispose_cxcursor_set (cset: CXCURSOR_SET_IMPL_STRUCT_API)
+	clang_dispose_cxcursor_set (cset: CXCURSOR_SET_IMPL_STRUCT_API) 
 		do
 			c_clang_dispose_cxcursor_set (cset.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_cxcursor_set_contains (cset: CXCURSOR_SET_IMPL_STRUCT_API; cursor: CXCURSOR_STRUCT_API): INTEGER
+	clang_cxcursor_set_contains (cset: CXCURSOR_SET_IMPL_STRUCT_API; cursor: CXCURSOR_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_cxcursor_set_contains (cset.item, cursor.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_cxcursor_set_insert (cset: CXCURSOR_SET_IMPL_STRUCT_API; cursor: CXCURSOR_STRUCT_API): INTEGER
+	clang_cxcursor_set_insert (cset: CXCURSOR_SET_IMPL_STRUCT_API; cursor: CXCURSOR_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_cxcursor_set_insert (cset.item, cursor.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_cursor_semantic_parent (cursor: CXCURSOR_STRUCT_API): detachable CXCURSOR_STRUCT_API
+	clang_get_cursor_semantic_parent (cursor: CXCURSOR_STRUCT_API): detachable CXCURSOR_STRUCT_API 
 		do
 			if attached c_clang_get_cursor_semantic_parent (cursor.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_get_cursor_lexical_parent (cursor: CXCURSOR_STRUCT_API): detachable CXCURSOR_STRUCT_API
+	clang_get_cursor_lexical_parent (cursor: CXCURSOR_STRUCT_API): detachable CXCURSOR_STRUCT_API 
 		do
 			if attached c_clang_get_cursor_lexical_parent (cursor.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_get_overridden_cursors (cursor: CXCURSOR_STRUCT_API; overridden: CXCURSOR_STRUCT_API; num_overridden: POINTER)
+	clang_get_overridden_cursors (cursor: CXCURSOR_STRUCT_API; overridden: CXCURSOR_STRUCT_API; num_overridden: POINTER) 
 		do
 			c_clang_get_overridden_cursors (cursor.item, overridden.item, num_overridden)
+		ensure
+			instance_free: class
 		end
 
-	clang_dispose_overridden_cursors (overridden: CXCURSOR_STRUCT_API)
+	clang_dispose_overridden_cursors (overridden: CXCURSOR_STRUCT_API) 
 		do
 			c_clang_dispose_overridden_cursors (overridden.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_included_file (cursor: CXCURSOR_STRUCT_API): POINTER
+	clang_get_included_file (cursor: CXCURSOR_STRUCT_API): POINTER 
 		do
 			Result := c_clang_get_included_file (cursor.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_cursor (anonymous_1: CXTRANSLATION_UNIT_IMPL_STRUCT_API; anonymous_2: CXSOURCE_LOCATION_STRUCT_API): detachable CXCURSOR_STRUCT_API
+	clang_get_cursor (anonymous_1: CXTRANSLATION_UNIT_IMPL_STRUCT_API; anonymous_2: CXSOURCE_LOCATION_STRUCT_API): detachable CXCURSOR_STRUCT_API 
 		do
 			if attached c_clang_get_cursor (anonymous_1.item, anonymous_2.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_get_cursor_location (anonymous_1: CXCURSOR_STRUCT_API): detachable CXSOURCE_LOCATION_STRUCT_API
+	clang_get_cursor_location (anonymous_1: CXCURSOR_STRUCT_API): detachable CXSOURCE_LOCATION_STRUCT_API 
 		do
 			if attached c_clang_get_cursor_location (anonymous_1.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_get_cursor_extent (anonymous_1: CXCURSOR_STRUCT_API): detachable CXSOURCE_RANGE_STRUCT_API
+	clang_get_cursor_extent (anonymous_1: CXCURSOR_STRUCT_API): detachable CXSOURCE_RANGE_STRUCT_API 
 		do
 			if attached c_clang_get_cursor_extent (anonymous_1.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_get_cursor_type (c: CXCURSOR_STRUCT_API): detachable CXTYPE_STRUCT_API
+	clang_get_cursor_type (c: CXCURSOR_STRUCT_API): detachable CXTYPE_STRUCT_API 
 		do
 			if attached c_clang_get_cursor_type (c.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_get_type_spelling (ct: CXTYPE_STRUCT_API): detachable CXSTRING_STRUCT_API
+	clang_get_type_spelling (ct: CXTYPE_STRUCT_API): detachable CXSTRING_STRUCT_API 
 		do
 			if attached c_clang_get_type_spelling (ct.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_get_typedef_decl_underlying_type (c: CXCURSOR_STRUCT_API): detachable CXTYPE_STRUCT_API
+	clang_get_typedef_decl_underlying_type (c: CXCURSOR_STRUCT_API): detachable CXTYPE_STRUCT_API 
 		do
 			if attached c_clang_get_typedef_decl_underlying_type (c.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_get_enum_decl_integer_type (c: CXCURSOR_STRUCT_API): detachable CXTYPE_STRUCT_API
+	clang_get_enum_decl_integer_type (c: CXCURSOR_STRUCT_API): detachable CXTYPE_STRUCT_API 
 		do
 			if attached c_clang_get_enum_decl_integer_type (c.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_get_enum_constant_decl_value (c: CXCURSOR_STRUCT_API): INTEGER
+	clang_get_enum_constant_decl_value (c: CXCURSOR_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_get_enum_constant_decl_value (c.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_enum_constant_decl_unsigned_value (c: CXCURSOR_STRUCT_API): INTEGER
+	clang_get_enum_constant_decl_unsigned_value (c: CXCURSOR_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_get_enum_constant_decl_unsigned_value (c.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_field_decl_bit_width (c: CXCURSOR_STRUCT_API): INTEGER
+	clang_get_field_decl_bit_width (c: CXCURSOR_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_get_field_decl_bit_width (c.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_cursor_get_num_arguments (c: CXCURSOR_STRUCT_API): INTEGER
+	clang_cursor_get_num_arguments (c: CXCURSOR_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_cursor_get_num_arguments (c.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_cursor_get_argument (c: CXCURSOR_STRUCT_API; i: INTEGER): detachable CXCURSOR_STRUCT_API
+	clang_cursor_get_argument (c: CXCURSOR_STRUCT_API; i: INTEGER): detachable CXCURSOR_STRUCT_API 
 		do
 			if attached c_clang_cursor_get_argument (c.item, i) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_cursor_get_num_template_arguments (c: CXCURSOR_STRUCT_API): INTEGER
+	clang_cursor_get_num_template_arguments (c: CXCURSOR_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_cursor_get_num_template_arguments (c.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_cursor_get_template_argument_kind (c: CXCURSOR_STRUCT_API; i: INTEGER): INTEGER
+	clang_cursor_get_template_argument_kind (c: CXCURSOR_STRUCT_API; i: INTEGER): INTEGER 
 		do
 			Result := c_clang_cursor_get_template_argument_kind (c.item, i)
+		ensure
+			instance_free: class
 		end
 
-	clang_cursor_get_template_argument_type (c: CXCURSOR_STRUCT_API; i: INTEGER): detachable CXTYPE_STRUCT_API
+	clang_cursor_get_template_argument_type (c: CXCURSOR_STRUCT_API; i: INTEGER): detachable CXTYPE_STRUCT_API 
 		do
 			if attached c_clang_cursor_get_template_argument_type (c.item, i) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_cursor_get_template_argument_value (c: CXCURSOR_STRUCT_API; i: INTEGER): INTEGER
+	clang_cursor_get_template_argument_value (c: CXCURSOR_STRUCT_API; i: INTEGER): INTEGER 
 		do
 			Result := c_clang_cursor_get_template_argument_value (c.item, i)
+		ensure
+			instance_free: class
 		end
 
-	clang_cursor_get_template_argument_unsigned_value (c: CXCURSOR_STRUCT_API; i: INTEGER): INTEGER
+	clang_cursor_get_template_argument_unsigned_value (c: CXCURSOR_STRUCT_API; i: INTEGER): INTEGER 
 		do
 			Result := c_clang_cursor_get_template_argument_unsigned_value (c.item, i)
+		ensure
+			instance_free: class
 		end
 
-	clang_equal_types (a: CXTYPE_STRUCT_API; b: CXTYPE_STRUCT_API): INTEGER
+	clang_equal_types (a: CXTYPE_STRUCT_API; b: CXTYPE_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_equal_types (a.item, b.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_canonical_type (t: CXTYPE_STRUCT_API): detachable CXTYPE_STRUCT_API
+	clang_get_canonical_type (t: CXTYPE_STRUCT_API): detachable CXTYPE_STRUCT_API 
 		do
 			if attached c_clang_get_canonical_type (t.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_is_const_qualified_type (t: CXTYPE_STRUCT_API): INTEGER
+	clang_is_const_qualified_type (t: CXTYPE_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_is_const_qualified_type (t.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_cursor_is_macro_function_like (c: CXCURSOR_STRUCT_API): INTEGER
+	clang_cursor_is_macro_function_like (c: CXCURSOR_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_cursor_is_macro_function_like (c.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_cursor_is_macro_builtin (c: CXCURSOR_STRUCT_API): INTEGER
+	clang_cursor_is_macro_builtin (c: CXCURSOR_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_cursor_is_macro_builtin (c.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_cursor_is_function_inlined (c: CXCURSOR_STRUCT_API): INTEGER
+	clang_cursor_is_function_inlined (c: CXCURSOR_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_cursor_is_function_inlined (c.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_is_volatile_qualified_type (t: CXTYPE_STRUCT_API): INTEGER
+	clang_is_volatile_qualified_type (t: CXTYPE_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_is_volatile_qualified_type (t.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_is_restrict_qualified_type (t: CXTYPE_STRUCT_API): INTEGER
+	clang_is_restrict_qualified_type (t: CXTYPE_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_is_restrict_qualified_type (t.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_address_space (t: CXTYPE_STRUCT_API): INTEGER
+	clang_get_address_space (t: CXTYPE_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_get_address_space (t.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_typedef_name (ct: CXTYPE_STRUCT_API): detachable CXSTRING_STRUCT_API
+	clang_get_typedef_name (ct: CXTYPE_STRUCT_API): detachable CXSTRING_STRUCT_API 
 		do
 			if attached c_clang_get_typedef_name (ct.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_get_pointee_type (t: CXTYPE_STRUCT_API): detachable CXTYPE_STRUCT_API
+	clang_get_pointee_type (t: CXTYPE_STRUCT_API): detachable CXTYPE_STRUCT_API 
 		do
 			if attached c_clang_get_pointee_type (t.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_get_type_declaration (t: CXTYPE_STRUCT_API): detachable CXCURSOR_STRUCT_API
+	clang_get_type_declaration (t: CXTYPE_STRUCT_API): detachable CXCURSOR_STRUCT_API 
 		do
 			if attached c_clang_get_type_declaration (t.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_get_decl_obj_ctype_encoding (c: CXCURSOR_STRUCT_API): detachable CXSTRING_STRUCT_API
+	clang_get_decl_obj_ctype_encoding (c: CXCURSOR_STRUCT_API): detachable CXSTRING_STRUCT_API 
 		do
 			if attached c_clang_get_decl_obj_ctype_encoding (c.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_type_get_obj_cencoding (type: CXTYPE_STRUCT_API): detachable CXSTRING_STRUCT_API
+	clang_type_get_obj_cencoding (type: CXTYPE_STRUCT_API): detachable CXSTRING_STRUCT_API 
 		do
 			if attached c_clang_type_get_obj_cencoding (type.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_get_type_kind_spelling (k: INTEGER): detachable CXSTRING_STRUCT_API
+	clang_get_type_kind_spelling (k: INTEGER): detachable CXSTRING_STRUCT_API 
 		do
 			if attached c_clang_get_type_kind_spelling (k) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_get_function_type_calling_conv (t: CXTYPE_STRUCT_API): INTEGER
+	clang_get_function_type_calling_conv (t: CXTYPE_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_get_function_type_calling_conv (t.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_result_type (t: CXTYPE_STRUCT_API): detachable CXTYPE_STRUCT_API
+	clang_get_result_type (t: CXTYPE_STRUCT_API): detachable CXTYPE_STRUCT_API 
 		do
 			if attached c_clang_get_result_type (t.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_get_exception_specification_type (t: CXTYPE_STRUCT_API): INTEGER
+	clang_get_exception_specification_type (t: CXTYPE_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_get_exception_specification_type (t.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_num_arg_types (t: CXTYPE_STRUCT_API): INTEGER
+	clang_get_num_arg_types (t: CXTYPE_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_get_num_arg_types (t.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_arg_type (t: CXTYPE_STRUCT_API; i: INTEGER): detachable CXTYPE_STRUCT_API
+	clang_get_arg_type (t: CXTYPE_STRUCT_API; i: INTEGER): detachable CXTYPE_STRUCT_API 
 		do
 			if attached c_clang_get_arg_type (t.item, i) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_type_get_obj_cobject_base_type (t: CXTYPE_STRUCT_API): detachable CXTYPE_STRUCT_API
+	clang_type_get_obj_cobject_base_type (t: CXTYPE_STRUCT_API): detachable CXTYPE_STRUCT_API 
 		do
 			if attached c_clang_type_get_obj_cobject_base_type (t.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_type_get_num_obj_cprotocol_refs (t: CXTYPE_STRUCT_API): INTEGER
+	clang_type_get_num_obj_cprotocol_refs (t: CXTYPE_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_type_get_num_obj_cprotocol_refs (t.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_type_get_obj_cprotocol_decl (t: CXTYPE_STRUCT_API; i: INTEGER): detachable CXCURSOR_STRUCT_API
+	clang_type_get_obj_cprotocol_decl (t: CXTYPE_STRUCT_API; i: INTEGER): detachable CXCURSOR_STRUCT_API 
 		do
 			if attached c_clang_type_get_obj_cprotocol_decl (t.item, i) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_type_get_num_obj_ctype_args (t: CXTYPE_STRUCT_API): INTEGER
+	clang_type_get_num_obj_ctype_args (t: CXTYPE_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_type_get_num_obj_ctype_args (t.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_type_get_obj_ctype_arg (t: CXTYPE_STRUCT_API; i: INTEGER): detachable CXTYPE_STRUCT_API
+	clang_type_get_obj_ctype_arg (t: CXTYPE_STRUCT_API; i: INTEGER): detachable CXTYPE_STRUCT_API 
 		do
 			if attached c_clang_type_get_obj_ctype_arg (t.item, i) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_is_function_type_variadic (t: CXTYPE_STRUCT_API): INTEGER
+	clang_is_function_type_variadic (t: CXTYPE_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_is_function_type_variadic (t.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_cursor_result_type (c: CXCURSOR_STRUCT_API): detachable CXTYPE_STRUCT_API
+	clang_get_cursor_result_type (c: CXCURSOR_STRUCT_API): detachable CXTYPE_STRUCT_API 
 		do
 			if attached c_clang_get_cursor_result_type (c.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_get_cursor_exception_specification_type (c: CXCURSOR_STRUCT_API): INTEGER
+	clang_get_cursor_exception_specification_type (c: CXCURSOR_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_get_cursor_exception_specification_type (c.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_is_podtype (t: CXTYPE_STRUCT_API): INTEGER
+	clang_is_podtype (t: CXTYPE_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_is_podtype (t.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_element_type (t: CXTYPE_STRUCT_API): detachable CXTYPE_STRUCT_API
+	clang_get_element_type (t: CXTYPE_STRUCT_API): detachable CXTYPE_STRUCT_API 
 		do
 			if attached c_clang_get_element_type (t.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_get_num_elements (t: CXTYPE_STRUCT_API): INTEGER
+	clang_get_num_elements (t: CXTYPE_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_get_num_elements (t.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_array_element_type (t: CXTYPE_STRUCT_API): detachable CXTYPE_STRUCT_API
+	clang_get_array_element_type (t: CXTYPE_STRUCT_API): detachable CXTYPE_STRUCT_API 
 		do
 			if attached c_clang_get_array_element_type (t.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_get_array_size (t: CXTYPE_STRUCT_API): INTEGER
+	clang_get_array_size (t: CXTYPE_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_get_array_size (t.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_type_get_named_type (t: CXTYPE_STRUCT_API): detachable CXTYPE_STRUCT_API
+	clang_type_get_named_type (t: CXTYPE_STRUCT_API): detachable CXTYPE_STRUCT_API 
 		do
 			if attached c_clang_type_get_named_type (t.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_type_is_transparent_tag_typedef (t: CXTYPE_STRUCT_API): INTEGER
+	clang_type_is_transparent_tag_typedef (t: CXTYPE_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_type_is_transparent_tag_typedef (t.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_type_get_nullability (t: CXTYPE_STRUCT_API): INTEGER
+	clang_type_get_nullability (t: CXTYPE_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_type_get_nullability (t.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_type_get_align_of (t: CXTYPE_STRUCT_API): INTEGER
+	clang_type_get_align_of (t: CXTYPE_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_type_get_align_of (t.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_type_get_class_type (t: CXTYPE_STRUCT_API): detachable CXTYPE_STRUCT_API
+	clang_type_get_class_type (t: CXTYPE_STRUCT_API): detachable CXTYPE_STRUCT_API 
 		do
 			if attached c_clang_type_get_class_type (t.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_type_get_size_of (t: CXTYPE_STRUCT_API): INTEGER
+	clang_type_get_size_of (t: CXTYPE_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_type_get_size_of (t.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_type_get_offset_of (t: CXTYPE_STRUCT_API; s: STRING): INTEGER
+	clang_type_get_offset_of (t: CXTYPE_STRUCT_API; s: STRING): INTEGER 
 		local
 			s_c_string: C_STRING
 		do
 			create s_c_string.make (s)
 			Result := c_clang_type_get_offset_of (t.item, s_c_string.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_type_get_modified_type (t: CXTYPE_STRUCT_API): detachable CXTYPE_STRUCT_API
+	clang_type_get_modified_type (t: CXTYPE_STRUCT_API): detachable CXTYPE_STRUCT_API 
 		do
 			if attached c_clang_type_get_modified_type (t.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_cursor_get_offset_of_field (c: CXCURSOR_STRUCT_API): INTEGER
+	clang_cursor_get_offset_of_field (c: CXCURSOR_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_cursor_get_offset_of_field (c.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_cursor_is_anonymous (c: CXCURSOR_STRUCT_API): INTEGER
+	clang_cursor_is_anonymous (c: CXCURSOR_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_cursor_is_anonymous (c.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_type_get_num_template_arguments (t: CXTYPE_STRUCT_API): INTEGER
+	clang_type_get_num_template_arguments (t: CXTYPE_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_type_get_num_template_arguments (t.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_type_get_template_argument_as_type (t: CXTYPE_STRUCT_API; i: INTEGER): detachable CXTYPE_STRUCT_API
+	clang_type_get_template_argument_as_type (t: CXTYPE_STRUCT_API; i: INTEGER): detachable CXTYPE_STRUCT_API 
 		do
 			if attached c_clang_type_get_template_argument_as_type (t.item, i) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_type_get_cxxref_qualifier (t: CXTYPE_STRUCT_API): INTEGER
+	clang_type_get_cxxref_qualifier (t: CXTYPE_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_type_get_cxxref_qualifier (t.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_cursor_is_bit_field (c: CXCURSOR_STRUCT_API): INTEGER
+	clang_cursor_is_bit_field (c: CXCURSOR_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_cursor_is_bit_field (c.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_is_virtual_base (anonymous_1: CXCURSOR_STRUCT_API): INTEGER
+	clang_is_virtual_base (anonymous_1: CXCURSOR_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_is_virtual_base (anonymous_1.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_cxxaccess_specifier (anonymous_1: CXCURSOR_STRUCT_API): INTEGER
+	clang_get_cxxaccess_specifier (anonymous_1: CXCURSOR_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_get_cxxaccess_specifier (anonymous_1.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_cursor_get_storage_class (anonymous_1: CXCURSOR_STRUCT_API): INTEGER
+	clang_cursor_get_storage_class (anonymous_1: CXCURSOR_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_cursor_get_storage_class (anonymous_1.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_num_overloaded_decls (cursor: CXCURSOR_STRUCT_API): INTEGER
+	clang_get_num_overloaded_decls (cursor: CXCURSOR_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_get_num_overloaded_decls (cursor.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_overloaded_decl (cursor: CXCURSOR_STRUCT_API; index: INTEGER): detachable CXCURSOR_STRUCT_API
+	clang_get_overloaded_decl (cursor: CXCURSOR_STRUCT_API; index: INTEGER): detachable CXCURSOR_STRUCT_API 
 		do
 			if attached c_clang_get_overloaded_decl (cursor.item, index) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_get_iboutlet_collection_type (anonymous_1: CXCURSOR_STRUCT_API): detachable CXTYPE_STRUCT_API
+	clang_get_iboutlet_collection_type (anonymous_1: CXCURSOR_STRUCT_API): detachable CXTYPE_STRUCT_API 
 		do
 			if attached c_clang_get_iboutlet_collection_type (anonymous_1.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_visit_children (parent: CXCURSOR_STRUCT_API; visitor: POINTER; client_data: POINTER): INTEGER
+	clang_visit_children (parent: CXCURSOR_STRUCT_API; visitor: POINTER; client_data: POINTER): INTEGER 
 		do
 			Result := c_clang_visit_children (parent.item, visitor, client_data)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_cursor_usr (anonymous_1: CXCURSOR_STRUCT_API): detachable CXSTRING_STRUCT_API
+	clang_get_cursor_usr (anonymous_1: CXCURSOR_STRUCT_API): detachable CXSTRING_STRUCT_API 
 		do
 			if attached c_clang_get_cursor_usr (anonymous_1.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
 	clang_construct_usr_obj_cclass (class_name: POINTER): POINTER
@@ -1192,7 +1549,7 @@ feature -- Access
 			]"
 		end
 
-	clang_construct_usr_obj_civar (name: STRING; classusr: CXSTRING_STRUCT_API): detachable CXSTRING_STRUCT_API
+	clang_construct_usr_obj_civar (name: STRING; classusr: CXSTRING_STRUCT_API): detachable CXSTRING_STRUCT_API 
 		local
 			name_c_string: C_STRING
 		do
@@ -1201,9 +1558,11 @@ feature -- Access
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_construct_usr_obj_cmethod (name: STRING; isinstancemethod: INTEGER; classusr: CXSTRING_STRUCT_API): detachable CXSTRING_STRUCT_API
+	clang_construct_usr_obj_cmethod (name: STRING; isinstancemethod: INTEGER; classusr: CXSTRING_STRUCT_API): detachable CXSTRING_STRUCT_API 
 		local
 			name_c_string: C_STRING
 		do
@@ -1212,9 +1571,11 @@ feature -- Access
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_construct_usr_obj_cproperty (property: STRING; classusr: CXSTRING_STRUCT_API): detachable CXSTRING_STRUCT_API
+	clang_construct_usr_obj_cproperty (property: STRING; classusr: CXSTRING_STRUCT_API): detachable CXSTRING_STRUCT_API 
 		local
 			property_c_string: C_STRING
 		do
@@ -1223,390 +1584,517 @@ feature -- Access
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_get_cursor_spelling (anonymous_1: CXCURSOR_STRUCT_API): detachable CXSTRING_STRUCT_API
+	clang_get_cursor_spelling (anonymous_1: CXCURSOR_STRUCT_API): detachable CXSTRING_STRUCT_API 
 		do
 			if attached c_clang_get_cursor_spelling (anonymous_1.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
+
+		ensure
+			instance_free: class
 		end
 
-	clang_cursor_get_spelling_name_range (anonymous_1: CXCURSOR_STRUCT_API; pieceindex: INTEGER; options: INTEGER): detachable CXSOURCE_RANGE_STRUCT_API
+	clang_cursor_get_spelling_name_range (anonymous_1: CXCURSOR_STRUCT_API; pieceindex: INTEGER; options: INTEGER): detachable CXSOURCE_RANGE_STRUCT_API 
 		do
 			if attached c_clang_cursor_get_spelling_name_range (anonymous_1.item, pieceindex, options) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_printing_policy_get_property (policy: POINTER; property: INTEGER): INTEGER
+	clang_printing_policy_get_property (policy: POINTER; property: INTEGER): INTEGER 
 		do
 			Result := c_clang_printing_policy_get_property (policy, property)
+		ensure
+			instance_free: class
 		end
 
-	clang_printing_policy_set_property (policy: POINTER; property: INTEGER; value: INTEGER)
+	clang_printing_policy_set_property (policy: POINTER; property: INTEGER; value: INTEGER) 
 		do
 			c_clang_printing_policy_set_property (policy, property, value)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_cursor_printing_policy (anonymous_1: CXCURSOR_STRUCT_API): POINTER
+	clang_get_cursor_printing_policy (anonymous_1: CXCURSOR_STRUCT_API): POINTER 
 		do
 			Result := c_clang_get_cursor_printing_policy (anonymous_1.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_printing_policy_dispose (policy: POINTER)
+	clang_printing_policy_dispose (policy: POINTER) 
 		do
 			c_clang_printing_policy_dispose (policy)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_cursor_pretty_printed (cursor: CXCURSOR_STRUCT_API; policy: POINTER): detachable CXSTRING_STRUCT_API
+	clang_get_cursor_pretty_printed (cursor: CXCURSOR_STRUCT_API; policy: POINTER): detachable CXSTRING_STRUCT_API 
 		do
 			if attached c_clang_get_cursor_pretty_printed (cursor.item, policy) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_get_cursor_display_name (anonymous_1: CXCURSOR_STRUCT_API): detachable CXSTRING_STRUCT_API
+	clang_get_cursor_display_name (anonymous_1: CXCURSOR_STRUCT_API): detachable CXSTRING_STRUCT_API 
 		do
 			if attached c_clang_get_cursor_display_name (anonymous_1.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_get_cursor_referenced (anonymous_1: CXCURSOR_STRUCT_API): detachable CXCURSOR_STRUCT_API
+	clang_get_cursor_referenced (anonymous_1: CXCURSOR_STRUCT_API): detachable CXCURSOR_STRUCT_API 
 		do
 			if attached c_clang_get_cursor_referenced (anonymous_1.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_get_cursor_definition (anonymous_1: CXCURSOR_STRUCT_API): detachable CXCURSOR_STRUCT_API
+	clang_get_cursor_definition (anonymous_1: CXCURSOR_STRUCT_API): detachable CXCURSOR_STRUCT_API 
 		do
 			if attached c_clang_get_cursor_definition (anonymous_1.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_is_cursor_definition (anonymous_1: CXCURSOR_STRUCT_API): INTEGER
+	clang_is_cursor_definition (anonymous_1: CXCURSOR_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_is_cursor_definition (anonymous_1.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_canonical_cursor (anonymous_1: CXCURSOR_STRUCT_API): detachable CXCURSOR_STRUCT_API
+	clang_get_canonical_cursor (anonymous_1: CXCURSOR_STRUCT_API): detachable CXCURSOR_STRUCT_API 
 		do
 			if attached c_clang_get_canonical_cursor (anonymous_1.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_cursor_get_obj_cselector_index (anonymous_1: CXCURSOR_STRUCT_API): INTEGER
+	clang_cursor_get_obj_cselector_index (anonymous_1: CXCURSOR_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_cursor_get_obj_cselector_index (anonymous_1.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_cursor_is_dynamic_call (c: CXCURSOR_STRUCT_API): INTEGER
+	clang_cursor_is_dynamic_call (c: CXCURSOR_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_cursor_is_dynamic_call (c.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_cursor_get_receiver_type (c: CXCURSOR_STRUCT_API): detachable CXTYPE_STRUCT_API
+	clang_cursor_get_receiver_type (c: CXCURSOR_STRUCT_API): detachable CXTYPE_STRUCT_API 
 		do
 			if attached c_clang_cursor_get_receiver_type (c.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_cursor_get_obj_cproperty_attributes (c: CXCURSOR_STRUCT_API; reserved: INTEGER): INTEGER
+	clang_cursor_get_obj_cproperty_attributes (c: CXCURSOR_STRUCT_API; reserved: INTEGER): INTEGER 
 		do
 			Result := c_clang_cursor_get_obj_cproperty_attributes (c.item, reserved)
+		ensure
+			instance_free: class
 		end
 
-	clang_cursor_get_obj_cproperty_getter_name (c: CXCURSOR_STRUCT_API): detachable CXSTRING_STRUCT_API
+	clang_cursor_get_obj_cproperty_getter_name (c: CXCURSOR_STRUCT_API): detachable CXSTRING_STRUCT_API 
 		do
 			if attached c_clang_cursor_get_obj_cproperty_getter_name (c.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_cursor_get_obj_cproperty_setter_name (c: CXCURSOR_STRUCT_API): detachable CXSTRING_STRUCT_API
+	clang_cursor_get_obj_cproperty_setter_name (c: CXCURSOR_STRUCT_API): detachable CXSTRING_STRUCT_API 
 		do
 			if attached c_clang_cursor_get_obj_cproperty_setter_name (c.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_cursor_get_obj_cdecl_qualifiers (c: CXCURSOR_STRUCT_API): INTEGER
+	clang_cursor_get_obj_cdecl_qualifiers (c: CXCURSOR_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_cursor_get_obj_cdecl_qualifiers (c.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_cursor_is_obj_coptional (c: CXCURSOR_STRUCT_API): INTEGER
+	clang_cursor_is_obj_coptional (c: CXCURSOR_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_cursor_is_obj_coptional (c.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_cursor_is_variadic (c: CXCURSOR_STRUCT_API): INTEGER
+	clang_cursor_is_variadic (c: CXCURSOR_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_cursor_is_variadic (c.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_cursor_is_external_symbol (c: CXCURSOR_STRUCT_API; language: CXSTRING_STRUCT_API; definedin: CXSTRING_STRUCT_API; isgenerated: POINTER): INTEGER
+	clang_cursor_is_external_symbol (c: CXCURSOR_STRUCT_API; language: CXSTRING_STRUCT_API; definedin: CXSTRING_STRUCT_API; isgenerated: POINTER): INTEGER 
 		do
 			Result := c_clang_cursor_is_external_symbol (c.item, language.item, definedin.item, isgenerated)
+		ensure
+			instance_free: class
 		end
 
-	clang_cursor_get_comment_range (c: CXCURSOR_STRUCT_API): detachable CXSOURCE_RANGE_STRUCT_API
+	clang_cursor_get_comment_range (c: CXCURSOR_STRUCT_API): detachable CXSOURCE_RANGE_STRUCT_API 
 		do
 			if attached c_clang_cursor_get_comment_range (c.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_cursor_get_raw_comment_text (c: CXCURSOR_STRUCT_API): detachable CXSTRING_STRUCT_API
+	clang_cursor_get_raw_comment_text (c: CXCURSOR_STRUCT_API): detachable CXSTRING_STRUCT_API 
 		do
 			if attached c_clang_cursor_get_raw_comment_text (c.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_cursor_get_brief_comment_text (c: CXCURSOR_STRUCT_API): detachable CXSTRING_STRUCT_API
+	clang_cursor_get_brief_comment_text (c: CXCURSOR_STRUCT_API): detachable CXSTRING_STRUCT_API 
 		do
 			if attached c_clang_cursor_get_brief_comment_text (c.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_cursor_get_mangling (anonymous_1: CXCURSOR_STRUCT_API): detachable CXSTRING_STRUCT_API
+	clang_cursor_get_mangling (anonymous_1: CXCURSOR_STRUCT_API): detachable CXSTRING_STRUCT_API 
 		do
 			if attached c_clang_cursor_get_mangling (anonymous_1.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_cursor_get_cxxmanglings (anonymous_1: CXCURSOR_STRUCT_API): detachable CXSTRING_SET_STRUCT_API
+	clang_cursor_get_cxxmanglings (anonymous_1: CXCURSOR_STRUCT_API): detachable CXSTRING_SET_STRUCT_API 
 		do
 			if attached c_clang_cursor_get_cxxmanglings (anonymous_1.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_cursor_get_obj_cmanglings (anonymous_1: CXCURSOR_STRUCT_API): detachable CXSTRING_SET_STRUCT_API
+	clang_cursor_get_obj_cmanglings (anonymous_1: CXCURSOR_STRUCT_API): detachable CXSTRING_SET_STRUCT_API 
 		do
 			if attached c_clang_cursor_get_obj_cmanglings (anonymous_1.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_cursor_get_module (c: CXCURSOR_STRUCT_API): POINTER
+	clang_cursor_get_module (c: CXCURSOR_STRUCT_API): POINTER 
 		do
 			Result := c_clang_cursor_get_module (c.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_module_for_file (anonymous_1: CXTRANSLATION_UNIT_IMPL_STRUCT_API; anonymous_2: POINTER): POINTER
+	clang_get_module_for_file (anonymous_1: CXTRANSLATION_UNIT_IMPL_STRUCT_API; anonymous_2: POINTER): POINTER 
 		do
 			Result := c_clang_get_module_for_file (anonymous_1.item, anonymous_2)
+		ensure
+			instance_free: class
 		end
 
-	clang_module_get_astfile (module: POINTER): POINTER
+	clang_module_get_astfile (module: POINTER): POINTER 
 		do
 			Result := c_clang_module_get_astfile (module)
+		ensure
+			instance_free: class
 		end
 
-	clang_module_get_parent (module: POINTER): POINTER
+	clang_module_get_parent (module: POINTER): POINTER 
 		do
 			Result := c_clang_module_get_parent (module)
+		ensure
+			instance_free: class
 		end
 
-	clang_module_get_name (module: POINTER): detachable CXSTRING_STRUCT_API
+	clang_module_get_name (module: POINTER): detachable CXSTRING_STRUCT_API 
 		do
 			if attached c_clang_module_get_name (module) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_module_get_full_name (module: POINTER): detachable CXSTRING_STRUCT_API
+	clang_module_get_full_name (module: POINTER): detachable CXSTRING_STRUCT_API 
 		do
 			if attached c_clang_module_get_full_name (module) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_module_is_system (module: POINTER): INTEGER
+	clang_module_is_system (module: POINTER): INTEGER 
 		do
 			Result := c_clang_module_is_system (module)
+		ensure
+			instance_free: class
 		end
 
-	clang_module_get_num_top_level_headers (anonymous_1: CXTRANSLATION_UNIT_IMPL_STRUCT_API; module: POINTER): INTEGER
+	clang_module_get_num_top_level_headers (anonymous_1: CXTRANSLATION_UNIT_IMPL_STRUCT_API; module: POINTER): INTEGER 
 		do
 			Result := c_clang_module_get_num_top_level_headers (anonymous_1.item, module)
+		ensure
+			instance_free: class
 		end
 
-	clang_module_get_top_level_header (anonymous_1: CXTRANSLATION_UNIT_IMPL_STRUCT_API; module: POINTER; index: INTEGER): POINTER
+	clang_module_get_top_level_header (anonymous_1: CXTRANSLATION_UNIT_IMPL_STRUCT_API; module: POINTER; index: INTEGER): POINTER 
 		do
 			Result := c_clang_module_get_top_level_header (anonymous_1.item, module, index)
+		ensure
+			instance_free: class
 		end
 
-	clang_cxxconstructor_is_converting_constructor (c: CXCURSOR_STRUCT_API): INTEGER
+	clang_cxxconstructor_is_converting_constructor (c: CXCURSOR_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_cxxconstructor_is_converting_constructor (c.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_cxxconstructor_is_copy_constructor (c: CXCURSOR_STRUCT_API): INTEGER
+	clang_cxxconstructor_is_copy_constructor (c: CXCURSOR_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_cxxconstructor_is_copy_constructor (c.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_cxxconstructor_is_default_constructor (c: CXCURSOR_STRUCT_API): INTEGER
+	clang_cxxconstructor_is_default_constructor (c: CXCURSOR_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_cxxconstructor_is_default_constructor (c.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_cxxconstructor_is_move_constructor (c: CXCURSOR_STRUCT_API): INTEGER
+	clang_cxxconstructor_is_move_constructor (c: CXCURSOR_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_cxxconstructor_is_move_constructor (c.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_cxxfield_is_mutable (c: CXCURSOR_STRUCT_API): INTEGER
+	clang_cxxfield_is_mutable (c: CXCURSOR_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_cxxfield_is_mutable (c.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_cxxmethod_is_defaulted (c: CXCURSOR_STRUCT_API): INTEGER
+	clang_cxxmethod_is_defaulted (c: CXCURSOR_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_cxxmethod_is_defaulted (c.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_cxxmethod_is_pure_virtual (c: CXCURSOR_STRUCT_API): INTEGER
+	clang_cxxmethod_is_pure_virtual (c: CXCURSOR_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_cxxmethod_is_pure_virtual (c.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_cxxmethod_is_static (c: CXCURSOR_STRUCT_API): INTEGER
+	clang_cxxmethod_is_static (c: CXCURSOR_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_cxxmethod_is_static (c.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_cxxmethod_is_virtual (c: CXCURSOR_STRUCT_API): INTEGER
+	clang_cxxmethod_is_virtual (c: CXCURSOR_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_cxxmethod_is_virtual (c.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_cxxrecord_is_abstract (c: CXCURSOR_STRUCT_API): INTEGER
+	clang_cxxrecord_is_abstract (c: CXCURSOR_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_cxxrecord_is_abstract (c.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_enum_decl_is_scoped (c: CXCURSOR_STRUCT_API): INTEGER
+	clang_enum_decl_is_scoped (c: CXCURSOR_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_enum_decl_is_scoped (c.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_cxxmethod_is_const (c: CXCURSOR_STRUCT_API): INTEGER
+	clang_cxxmethod_is_const (c: CXCURSOR_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_cxxmethod_is_const (c.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_template_cursor_kind (c: CXCURSOR_STRUCT_API): INTEGER
+	clang_get_template_cursor_kind (c: CXCURSOR_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_get_template_cursor_kind (c.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_specialized_cursor_template (c: CXCURSOR_STRUCT_API): detachable CXCURSOR_STRUCT_API
+	clang_get_specialized_cursor_template (c: CXCURSOR_STRUCT_API): detachable CXCURSOR_STRUCT_API 
 		do
 			if attached c_clang_get_specialized_cursor_template (c.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_get_cursor_reference_name_range (c: CXCURSOR_STRUCT_API; nameflags: INTEGER; pieceindex: INTEGER): detachable CXSOURCE_RANGE_STRUCT_API
+	clang_get_cursor_reference_name_range (c: CXCURSOR_STRUCT_API; nameflags: INTEGER; pieceindex: INTEGER): detachable CXSOURCE_RANGE_STRUCT_API 
 		do
 			if attached c_clang_get_cursor_reference_name_range (c.item, nameflags, pieceindex) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_get_token (tu: CXTRANSLATION_UNIT_IMPL_STRUCT_API; location: CXSOURCE_LOCATION_STRUCT_API): detachable CXTOKEN_STRUCT_API
+	clang_get_token (tu: CXTRANSLATION_UNIT_IMPL_STRUCT_API; location: CXSOURCE_LOCATION_STRUCT_API): detachable CXTOKEN_STRUCT_API 
 		do
 			if attached c_clang_get_token (tu.item, location.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_get_token_kind (anonymous_1: CXTOKEN_STRUCT_API): INTEGER
+	clang_get_token_kind (anonymous_1: CXTOKEN_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_get_token_kind (anonymous_1.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_token_spelling (anonymous_1: CXTRANSLATION_UNIT_IMPL_STRUCT_API; anonymous_2: CXTOKEN_STRUCT_API): detachable CXSTRING_STRUCT_API
+	clang_get_token_spelling (anonymous_1: CXTRANSLATION_UNIT_IMPL_STRUCT_API; anonymous_2: CXTOKEN_STRUCT_API): detachable CXSTRING_STRUCT_API 
 		do
 			if attached c_clang_get_token_spelling (anonymous_1.item, anonymous_2.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_get_token_location (anonymous_1: CXTRANSLATION_UNIT_IMPL_STRUCT_API; anonymous_2: CXTOKEN_STRUCT_API): detachable CXSOURCE_LOCATION_STRUCT_API
+	clang_get_token_location (anonymous_1: CXTRANSLATION_UNIT_IMPL_STRUCT_API; anonymous_2: CXTOKEN_STRUCT_API): detachable CXSOURCE_LOCATION_STRUCT_API 
 		do
 			if attached c_clang_get_token_location (anonymous_1.item, anonymous_2.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_get_token_extent (anonymous_1: CXTRANSLATION_UNIT_IMPL_STRUCT_API; anonymous_2: CXTOKEN_STRUCT_API): detachable CXSOURCE_RANGE_STRUCT_API
+	clang_get_token_extent (anonymous_1: CXTRANSLATION_UNIT_IMPL_STRUCT_API; anonymous_2: CXTOKEN_STRUCT_API): detachable CXSOURCE_RANGE_STRUCT_API 
 		do
 			if attached c_clang_get_token_extent (anonymous_1.item, anonymous_2.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_tokenize (tu: CXTRANSLATION_UNIT_IMPL_STRUCT_API; range: CXSOURCE_RANGE_STRUCT_API; tokens: CXTOKEN_STRUCT_API; numtokens: POINTER)
+	clang_tokenize (tu: CXTRANSLATION_UNIT_IMPL_STRUCT_API; range: CXSOURCE_RANGE_STRUCT_API; tokens: CXTOKEN_STRUCT_API; numtokens: POINTER) 
 		do
 			c_clang_tokenize (tu.item, range.item, tokens.item, numtokens)
+		ensure
+			instance_free: class
 		end
 
-	clang_annotate_tokens (tu: CXTRANSLATION_UNIT_IMPL_STRUCT_API; tokens: CXTOKEN_STRUCT_API; numtokens: INTEGER; cursors: CXCURSOR_STRUCT_API)
+	clang_annotate_tokens (tu: CXTRANSLATION_UNIT_IMPL_STRUCT_API; tokens: CXTOKEN_STRUCT_API; numtokens: INTEGER; cursors: CXCURSOR_STRUCT_API) 
 		do
 			c_clang_annotate_tokens (tu.item, tokens.item, numtokens, cursors.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_dispose_tokens (tu: CXTRANSLATION_UNIT_IMPL_STRUCT_API; tokens: CXTOKEN_STRUCT_API; numtokens: INTEGER)
+	clang_dispose_tokens (tu: CXTRANSLATION_UNIT_IMPL_STRUCT_API; tokens: CXTOKEN_STRUCT_API; numtokens: INTEGER) 
 		do
 			c_clang_dispose_tokens (tu.item, tokens.item, numtokens)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_cursor_kind_spelling (kind: INTEGER): detachable CXSTRING_STRUCT_API
+	clang_get_cursor_kind_spelling (kind: INTEGER): detachable CXSTRING_STRUCT_API 
 		do
 			if attached c_clang_get_cursor_kind_spelling (kind) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_get_definition_spelling_and_extent (anonymous_1: CXCURSOR_STRUCT_API; startbuf: POINTER; endbuf: POINTER; startline: POINTER; startcolumn: POINTER; endline: POINTER; endcolumn: POINTER)
+	clang_get_definition_spelling_and_extent (anonymous_1: CXCURSOR_STRUCT_API; startbuf: POINTER; endbuf: POINTER; startline: POINTER; startcolumn: POINTER; endline: POINTER; endcolumn: POINTER) 
 		do
 			c_clang_get_definition_spelling_and_extent (anonymous_1.item, startbuf, endbuf, startline, startcolumn, endline, endcolumn)
+		ensure
+			instance_free: class
 		end
 
 	clang_enable_stack_traces
@@ -1618,89 +2106,117 @@ feature -- Access
 			]"
 		end
 
-	clang_execute_on_thread (fn: POINTER; user_data: POINTER; stack_size: INTEGER)
+	clang_execute_on_thread (fn: POINTER; user_data: POINTER; stack_size: INTEGER) 
 		do
 			c_clang_execute_on_thread (fn, user_data, stack_size)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_completion_chunk_kind (completion_string: POINTER; chunk_number: INTEGER): INTEGER
+	clang_get_completion_chunk_kind (completion_string: POINTER; chunk_number: INTEGER): INTEGER 
 		do
 			Result := c_clang_get_completion_chunk_kind (completion_string, chunk_number)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_completion_chunk_text (completion_string: POINTER; chunk_number: INTEGER): detachable CXSTRING_STRUCT_API
+	clang_get_completion_chunk_text (completion_string: POINTER; chunk_number: INTEGER): detachable CXSTRING_STRUCT_API 
 		do
 			if attached c_clang_get_completion_chunk_text (completion_string, chunk_number) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_get_completion_chunk_completion_string (completion_string: POINTER; chunk_number: INTEGER): POINTER
+	clang_get_completion_chunk_completion_string (completion_string: POINTER; chunk_number: INTEGER): POINTER 
 		do
 			Result := c_clang_get_completion_chunk_completion_string (completion_string, chunk_number)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_num_completion_chunks (completion_string: POINTER): INTEGER
+	clang_get_num_completion_chunks (completion_string: POINTER): INTEGER 
 		do
 			Result := c_clang_get_num_completion_chunks (completion_string)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_completion_priority (completion_string: POINTER): INTEGER
+	clang_get_completion_priority (completion_string: POINTER): INTEGER 
 		do
 			Result := c_clang_get_completion_priority (completion_string)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_completion_availability (completion_string: POINTER): INTEGER
+	clang_get_completion_availability (completion_string: POINTER): INTEGER 
 		do
 			Result := c_clang_get_completion_availability (completion_string)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_completion_num_annotations (completion_string: POINTER): INTEGER
+	clang_get_completion_num_annotations (completion_string: POINTER): INTEGER 
 		do
 			Result := c_clang_get_completion_num_annotations (completion_string)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_completion_annotation (completion_string: POINTER; annotation_number: INTEGER): detachable CXSTRING_STRUCT_API
+	clang_get_completion_annotation (completion_string: POINTER; annotation_number: INTEGER): detachable CXSTRING_STRUCT_API 
 		do
 			if attached c_clang_get_completion_annotation (completion_string, annotation_number) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_get_completion_parent (completion_string: POINTER; kind: POINTER): detachable CXSTRING_STRUCT_API
+	clang_get_completion_parent (completion_string: POINTER; kind: POINTER): detachable CXSTRING_STRUCT_API 
 		do
 			if attached c_clang_get_completion_parent (completion_string, kind) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_get_completion_brief_comment (completion_string: POINTER): detachable CXSTRING_STRUCT_API
+	clang_get_completion_brief_comment (completion_string: POINTER): detachable CXSTRING_STRUCT_API 
 		do
 			if attached c_clang_get_completion_brief_comment (completion_string) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_get_cursor_completion_string (cursor: CXCURSOR_STRUCT_API): POINTER
+	clang_get_cursor_completion_string (cursor: CXCURSOR_STRUCT_API): POINTER 
 		do
 			Result := c_clang_get_cursor_completion_string (cursor.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_completion_num_fix_its (results: CXCODE_COMPLETE_RESULTS_STRUCT_API; completion_index: INTEGER): INTEGER
+	clang_get_completion_num_fix_its (results: CXCODE_COMPLETE_RESULTS_STRUCT_API; completion_index: INTEGER): INTEGER 
 		do
 			Result := c_clang_get_completion_num_fix_its (results.item, completion_index)
+		ensure
+			instance_free: class
 		end
 
-	clang_get_completion_fix_it (results: CXCODE_COMPLETE_RESULTS_STRUCT_API; completion_index: INTEGER; fixit_index: INTEGER; replacement_range: CXSOURCE_RANGE_STRUCT_API): detachable CXSTRING_STRUCT_API
+	clang_get_completion_fix_it (results: CXCODE_COMPLETE_RESULTS_STRUCT_API; completion_index: INTEGER; fixit_index: INTEGER; replacement_range: CXSOURCE_RANGE_STRUCT_API): detachable CXSTRING_STRUCT_API 
 		do
 			if attached c_clang_get_completion_fix_it (results.item, completion_index, fixit_index, replacement_range.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
 	clang_default_code_complete_options: INTEGER
@@ -1712,7 +2228,7 @@ feature -- Access
 			]"
 		end
 
-	clang_code_complete_at (tu: CXTRANSLATION_UNIT_IMPL_STRUCT_API; complete_filename: STRING; complete_line: INTEGER; complete_column: INTEGER; unsaved_files: CXUNSAVED_FILE_STRUCT_API; num_unsaved_files: INTEGER; options: INTEGER): detachable CXCODE_COMPLETE_RESULTS_STRUCT_API
+	clang_code_complete_at (tu: CXTRANSLATION_UNIT_IMPL_STRUCT_API; complete_filename: STRING; complete_line: INTEGER; complete_column: INTEGER; unsaved_files: CXUNSAVED_FILE_STRUCT_API; num_unsaved_files: INTEGER; options: INTEGER): detachable CXCODE_COMPLETE_RESULTS_STRUCT_API 
 		local
 			complete_filename_c_string: C_STRING
 		do
@@ -1721,60 +2237,80 @@ feature -- Access
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_sort_code_completion_results (results: CXCOMPLETION_RESULT_STRUCT_API; numresults: INTEGER)
+	clang_sort_code_completion_results (results: CXCOMPLETION_RESULT_STRUCT_API; numresults: INTEGER) 
 		do
 			c_clang_sort_code_completion_results (results.item, numresults)
+		ensure
+			instance_free: class
 		end
 
-	clang_dispose_code_complete_results (results: CXCODE_COMPLETE_RESULTS_STRUCT_API)
+	clang_dispose_code_complete_results (results: CXCODE_COMPLETE_RESULTS_STRUCT_API) 
 		do
 			c_clang_dispose_code_complete_results (results.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_code_complete_get_num_diagnostics (results: CXCODE_COMPLETE_RESULTS_STRUCT_API): INTEGER
+	clang_code_complete_get_num_diagnostics (results: CXCODE_COMPLETE_RESULTS_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_code_complete_get_num_diagnostics (results.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_code_complete_get_diagnostic (results: CXCODE_COMPLETE_RESULTS_STRUCT_API; index: INTEGER): POINTER
+	clang_code_complete_get_diagnostic (results: CXCODE_COMPLETE_RESULTS_STRUCT_API; index: INTEGER): POINTER 
 		do
 			Result := c_clang_code_complete_get_diagnostic (results.item, index)
+		ensure
+			instance_free: class
 		end
 
-	clang_code_complete_get_contexts (results: CXCODE_COMPLETE_RESULTS_STRUCT_API): INTEGER
+	clang_code_complete_get_contexts (results: CXCODE_COMPLETE_RESULTS_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_code_complete_get_contexts (results.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_code_complete_get_container_kind (results: CXCODE_COMPLETE_RESULTS_STRUCT_API; isincomplete: POINTER): INTEGER
+	clang_code_complete_get_container_kind (results: CXCODE_COMPLETE_RESULTS_STRUCT_API; isincomplete: POINTER): INTEGER 
 		do
 			Result := c_clang_code_complete_get_container_kind (results.item, isincomplete)
+		ensure
+			instance_free: class
 		end
 
-	clang_code_complete_get_container_usr (results: CXCODE_COMPLETE_RESULTS_STRUCT_API): detachable CXSTRING_STRUCT_API
+	clang_code_complete_get_container_usr (results: CXCODE_COMPLETE_RESULTS_STRUCT_API): detachable CXSTRING_STRUCT_API 
 		do
 			if attached c_clang_code_complete_get_container_usr (results.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_code_complete_get_obj_cselector (results: CXCODE_COMPLETE_RESULTS_STRUCT_API): detachable CXSTRING_STRUCT_API
+	clang_code_complete_get_obj_cselector (results: CXCODE_COMPLETE_RESULTS_STRUCT_API): detachable CXSTRING_STRUCT_API 
 		do
 			if attached c_clang_code_complete_get_obj_cselector (results.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_get_clang_version: detachable CXSTRING_STRUCT_API
+	clang_get_clang_version: detachable CXSTRING_STRUCT_API 
 		do
 			if attached c_clang_get_clang_version as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
 	clang_toggle_crash_recovery (isenabled: INTEGER)
@@ -1786,54 +2322,74 @@ feature -- Access
 			]"
 		end
 
-	clang_get_inclusions (tu: CXTRANSLATION_UNIT_IMPL_STRUCT_API; visitor: POINTER; client_data: POINTER)
+	clang_get_inclusions (tu: CXTRANSLATION_UNIT_IMPL_STRUCT_API; visitor: POINTER; client_data: POINTER) 
 		do
 			c_clang_get_inclusions (tu.item, visitor, client_data)
+		ensure
+			instance_free: class
 		end
 
-	clang_cursor_evaluate (c: CXCURSOR_STRUCT_API): POINTER
+	clang_cursor_evaluate (c: CXCURSOR_STRUCT_API): POINTER 
 		do
 			Result := c_clang_cursor_evaluate (c.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_eval_result_get_kind (e: POINTER): INTEGER
+	clang_eval_result_get_kind (e: POINTER): INTEGER 
 		do
 			Result := c_clang_eval_result_get_kind (e)
+		ensure
+			instance_free: class
 		end
 
-	clang_eval_result_get_as_int (e: POINTER): INTEGER
+	clang_eval_result_get_as_int (e: POINTER): INTEGER 
 		do
 			Result := c_clang_eval_result_get_as_int (e)
+		ensure
+			instance_free: class
 		end
 
-	clang_eval_result_get_as_long_long (e: POINTER): INTEGER
+	clang_eval_result_get_as_long_long (e: POINTER): INTEGER 
 		do
 			Result := c_clang_eval_result_get_as_long_long (e)
+		ensure
+			instance_free: class
 		end
 
-	clang_eval_result_is_unsigned_int (e: POINTER): INTEGER
+	clang_eval_result_is_unsigned_int (e: POINTER): INTEGER 
 		do
 			Result := c_clang_eval_result_is_unsigned_int (e)
+		ensure
+			instance_free: class
 		end
 
-	clang_eval_result_get_as_unsigned (e: POINTER): INTEGER
+	clang_eval_result_get_as_unsigned (e: POINTER): INTEGER 
 		do
 			Result := c_clang_eval_result_get_as_unsigned (e)
+		ensure
+			instance_free: class
 		end
 
-	clang_eval_result_get_as_double (e: POINTER): REAL_64
+	clang_eval_result_get_as_double (e: POINTER): REAL_64 
 		do
 			Result := c_clang_eval_result_get_as_double (e)
+		ensure
+			instance_free: class
 		end
 
-	clang_eval_result_get_as_str (e: POINTER): POINTER
+	clang_eval_result_get_as_str (e: POINTER): POINTER 
 		do
 			Result := c_clang_eval_result_get_as_str (e)
+		ensure
+			instance_free: class
 		end
 
-	clang_eval_result_dispose (e: POINTER)
+	clang_eval_result_dispose (e: POINTER) 
 		do
 			c_clang_eval_result_dispose (e)
+		ensure
+			instance_free: class
 		end
 
 	clang_get_remappings (path: POINTER): POINTER
@@ -1845,164 +2401,216 @@ feature -- Access
 			]"
 		end
 
-	clang_get_remappings_from_file_list (filepaths: POINTER; numfiles: INTEGER): POINTER
+	clang_get_remappings_from_file_list (filepaths: POINTER; numfiles: INTEGER): POINTER 
 		do
 			Result := c_clang_get_remappings_from_file_list (filepaths, numfiles)
+		ensure
+			instance_free: class
 		end
 
-	clang_remap_get_num_files (anonymous_1: POINTER): INTEGER
+	clang_remap_get_num_files (anonymous_1: POINTER): INTEGER 
 		do
 			Result := c_clang_remap_get_num_files (anonymous_1)
+		ensure
+			instance_free: class
 		end
 
-	clang_remap_get_filenames (anonymous_1: POINTER; index: INTEGER; original: CXSTRING_STRUCT_API; transformed: CXSTRING_STRUCT_API)
+	clang_remap_get_filenames (anonymous_1: POINTER; index: INTEGER; original: CXSTRING_STRUCT_API; transformed: CXSTRING_STRUCT_API) 
 		do
 			c_clang_remap_get_filenames (anonymous_1, index, original.item, transformed.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_remap_dispose (anonymous_1: POINTER)
+	clang_remap_dispose (anonymous_1: POINTER) 
 		do
 			c_clang_remap_dispose (anonymous_1)
+		ensure
+			instance_free: class
 		end
 
-	clang_find_references_in_file (cursor: CXCURSOR_STRUCT_API; file: POINTER; visitor: CXCURSOR_AND_RANGE_VISITOR_STRUCT_API): INTEGER
+	clang_find_references_in_file (cursor: CXCURSOR_STRUCT_API; file: POINTER; visitor: CXCURSOR_AND_RANGE_VISITOR_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_find_references_in_file (cursor.item, file, visitor.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_find_includes_in_file (tu: CXTRANSLATION_UNIT_IMPL_STRUCT_API; file: POINTER; visitor: CXCURSOR_AND_RANGE_VISITOR_STRUCT_API): INTEGER
+	clang_find_includes_in_file (tu: CXTRANSLATION_UNIT_IMPL_STRUCT_API; file: POINTER; visitor: CXCURSOR_AND_RANGE_VISITOR_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_find_includes_in_file (tu.item, file, visitor.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_index_is_entity_obj_ccontainer_kind (anonymous_1: INTEGER): INTEGER
+	clang_index_is_entity_obj_ccontainer_kind (anonymous_1: INTEGER): INTEGER 
 		do
 			Result := c_clang_index_is_entity_obj_ccontainer_kind (anonymous_1)
+		ensure
+			instance_free: class
 		end
 
-	clang_index_get_obj_ccontainer_decl_info (anonymous_1: CXIDX_DECL_INFO_STRUCT_API): detachable CXIDX_OBJ_CCONTAINER_DECL_INFO_STRUCT_API
+	clang_index_get_obj_ccontainer_decl_info (anonymous_1: CXIDX_DECL_INFO_STRUCT_API): detachable CXIDX_OBJ_CCONTAINER_DECL_INFO_STRUCT_API 
 		do
 			if attached c_clang_index_get_obj_ccontainer_decl_info (anonymous_1.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_index_get_obj_cinterface_decl_info (anonymous_1: CXIDX_DECL_INFO_STRUCT_API): detachable CXIDX_OBJ_CINTERFACE_DECL_INFO_STRUCT_API
+	clang_index_get_obj_cinterface_decl_info (anonymous_1: CXIDX_DECL_INFO_STRUCT_API): detachable CXIDX_OBJ_CINTERFACE_DECL_INFO_STRUCT_API 
 		do
 			if attached c_clang_index_get_obj_cinterface_decl_info (anonymous_1.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_index_get_obj_ccategory_decl_info (anonymous_1: CXIDX_DECL_INFO_STRUCT_API): detachable CXIDX_OBJ_CCATEGORY_DECL_INFO_STRUCT_API
+	clang_index_get_obj_ccategory_decl_info (anonymous_1: CXIDX_DECL_INFO_STRUCT_API): detachable CXIDX_OBJ_CCATEGORY_DECL_INFO_STRUCT_API 
 		do
 			if attached c_clang_index_get_obj_ccategory_decl_info (anonymous_1.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_index_get_obj_cprotocol_ref_list_info (anonymous_1: CXIDX_DECL_INFO_STRUCT_API): detachable CXIDX_OBJ_CPROTOCOL_REF_LIST_INFO_STRUCT_API
+	clang_index_get_obj_cprotocol_ref_list_info (anonymous_1: CXIDX_DECL_INFO_STRUCT_API): detachable CXIDX_OBJ_CPROTOCOL_REF_LIST_INFO_STRUCT_API 
 		do
 			if attached c_clang_index_get_obj_cprotocol_ref_list_info (anonymous_1.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_index_get_obj_cproperty_decl_info (anonymous_1: CXIDX_DECL_INFO_STRUCT_API): detachable CXIDX_OBJ_CPROPERTY_DECL_INFO_STRUCT_API
+	clang_index_get_obj_cproperty_decl_info (anonymous_1: CXIDX_DECL_INFO_STRUCT_API): detachable CXIDX_OBJ_CPROPERTY_DECL_INFO_STRUCT_API 
 		do
 			if attached c_clang_index_get_obj_cproperty_decl_info (anonymous_1.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_index_get_iboutlet_collection_attr_info (anonymous_1: CXIDX_ATTR_INFO_STRUCT_API): detachable CXIDX_IBOUTLET_COLLECTION_ATTR_INFO_STRUCT_API
+	clang_index_get_iboutlet_collection_attr_info (anonymous_1: CXIDX_ATTR_INFO_STRUCT_API): detachable CXIDX_IBOUTLET_COLLECTION_ATTR_INFO_STRUCT_API 
 		do
 			if attached c_clang_index_get_iboutlet_collection_attr_info (anonymous_1.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_index_get_cxxclass_decl_info (anonymous_1: CXIDX_DECL_INFO_STRUCT_API): detachable CXIDX_CXXCLASS_DECL_INFO_STRUCT_API
+	clang_index_get_cxxclass_decl_info (anonymous_1: CXIDX_DECL_INFO_STRUCT_API): detachable CXIDX_CXXCLASS_DECL_INFO_STRUCT_API 
 		do
 			if attached c_clang_index_get_cxxclass_decl_info (anonymous_1.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_index_get_client_container (anonymous_1: CXIDX_CONTAINER_INFO_STRUCT_API): POINTER
+	clang_index_get_client_container (anonymous_1: CXIDX_CONTAINER_INFO_STRUCT_API): POINTER 
 		do
 			Result := c_clang_index_get_client_container (anonymous_1.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_index_set_client_container (anonymous_1: CXIDX_CONTAINER_INFO_STRUCT_API; anonymous_2: POINTER)
+	clang_index_set_client_container (anonymous_1: CXIDX_CONTAINER_INFO_STRUCT_API; anonymous_2: POINTER) 
 		do
 			c_clang_index_set_client_container (anonymous_1.item, anonymous_2)
+		ensure
+			instance_free: class
 		end
 
-	clang_index_get_client_entity (anonymous_1: CXIDX_ENTITY_INFO_STRUCT_API): POINTER
+	clang_index_get_client_entity (anonymous_1: CXIDX_ENTITY_INFO_STRUCT_API): POINTER 
 		do
 			Result := c_clang_index_get_client_entity (anonymous_1.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_index_set_client_entity (anonymous_1: CXIDX_ENTITY_INFO_STRUCT_API; anonymous_2: POINTER)
+	clang_index_set_client_entity (anonymous_1: CXIDX_ENTITY_INFO_STRUCT_API; anonymous_2: POINTER) 
 		do
 			c_clang_index_set_client_entity (anonymous_1.item, anonymous_2)
+		ensure
+			instance_free: class
 		end
 
-	clang_index_action_create (cidx: POINTER): POINTER
+	clang_index_action_create (cidx: POINTER): POINTER 
 		do
 			Result := c_clang_index_action_create (cidx)
+		ensure
+			instance_free: class
 		end
 
-	clang_index_action_dispose (anonymous_1: POINTER)
+	clang_index_action_dispose (anonymous_1: POINTER) 
 		do
 			c_clang_index_action_dispose (anonymous_1)
+		ensure
+			instance_free: class
 		end
 
-	clang_index_source_file (anonymous_1: POINTER; client_data: POINTER; index_callbacks: INDEXER_CALLBACKS_STRUCT_API; index_callbacks_size: INTEGER; index_options: INTEGER; source_filename: STRING; command_line_args: POINTER; num_command_line_args: INTEGER; unsaved_files: CXUNSAVED_FILE_STRUCT_API; num_unsaved_files: INTEGER; out_tu: CXTRANSLATION_UNIT_IMPL_STRUCT_API; tu_options: INTEGER): INTEGER
+	clang_index_source_file (anonymous_1: POINTER; client_data: POINTER; index_callbacks: INDEXER_CALLBACKS_STRUCT_API; index_callbacks_size: INTEGER; index_options: INTEGER; source_filename: STRING; command_line_args: POINTER; num_command_line_args: INTEGER; unsaved_files: CXUNSAVED_FILE_STRUCT_API; num_unsaved_files: INTEGER; out_tu: CXTRANSLATION_UNIT_IMPL_STRUCT_API; tu_options: INTEGER): INTEGER 
 		local
 			source_filename_c_string: C_STRING
 		do
 			create source_filename_c_string.make (source_filename)
 			Result := c_clang_index_source_file (anonymous_1, client_data, index_callbacks.item, index_callbacks_size, index_options, source_filename_c_string.item, command_line_args, num_command_line_args, unsaved_files.item, num_unsaved_files, out_tu.item, tu_options)
+		ensure
+			instance_free: class
 		end
 
-	clang_index_source_file_full_argv (anonymous_1: POINTER; client_data: POINTER; index_callbacks: INDEXER_CALLBACKS_STRUCT_API; index_callbacks_size: INTEGER; index_options: INTEGER; source_filename: STRING; command_line_args: POINTER; num_command_line_args: INTEGER; unsaved_files: CXUNSAVED_FILE_STRUCT_API; num_unsaved_files: INTEGER; out_tu: CXTRANSLATION_UNIT_IMPL_STRUCT_API; tu_options: INTEGER): INTEGER
+	clang_index_source_file_full_argv (anonymous_1: POINTER; client_data: POINTER; index_callbacks: INDEXER_CALLBACKS_STRUCT_API; index_callbacks_size: INTEGER; index_options: INTEGER; source_filename: STRING; command_line_args: POINTER; num_command_line_args: INTEGER; unsaved_files: CXUNSAVED_FILE_STRUCT_API; num_unsaved_files: INTEGER; out_tu: CXTRANSLATION_UNIT_IMPL_STRUCT_API; tu_options: INTEGER): INTEGER 
 		local
 			source_filename_c_string: C_STRING
 		do
 			create source_filename_c_string.make (source_filename)
 			Result := c_clang_index_source_file_full_argv (anonymous_1, client_data, index_callbacks.item, index_callbacks_size, index_options, source_filename_c_string.item, command_line_args, num_command_line_args, unsaved_files.item, num_unsaved_files, out_tu.item, tu_options)
+		ensure
+			instance_free: class
 		end
 
-	clang_index_translation_unit (anonymous_1: POINTER; client_data: POINTER; index_callbacks: INDEXER_CALLBACKS_STRUCT_API; index_callbacks_size: INTEGER; index_options: INTEGER; anonymous_6: CXTRANSLATION_UNIT_IMPL_STRUCT_API): INTEGER
+	clang_index_translation_unit (anonymous_1: POINTER; client_data: POINTER; index_callbacks: INDEXER_CALLBACKS_STRUCT_API; index_callbacks_size: INTEGER; index_options: INTEGER; anonymous_6: CXTRANSLATION_UNIT_IMPL_STRUCT_API): INTEGER 
 		do
 			Result := c_clang_index_translation_unit (anonymous_1, client_data, index_callbacks.item, index_callbacks_size, index_options, anonymous_6.item)
+		ensure
+			instance_free: class
 		end
 
-	clang_index_loc_get_file_location (loc: CXIDX_LOC_STRUCT_API; indexfile: POINTER; file: POINTER; line: POINTER; column: POINTER; offset: POINTER)
+	clang_index_loc_get_file_location (loc: CXIDX_LOC_STRUCT_API; indexfile: POINTER; file: POINTER; line: POINTER; column: POINTER; offset: POINTER) 
 		do
 			c_clang_index_loc_get_file_location (loc.item, indexfile, file, line, column, offset)
+		ensure
+			instance_free: class
 		end
 
-	clang_index_loc_get_cxsource_location (loc: CXIDX_LOC_STRUCT_API): detachable CXSOURCE_LOCATION_STRUCT_API
+	clang_index_loc_get_cxsource_location (loc: CXIDX_LOC_STRUCT_API): detachable CXSOURCE_LOCATION_STRUCT_API 
 		do
 			if attached c_clang_index_loc_get_cxsource_location (loc.item) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer ( l_ptr )
 			end
 
+		ensure
+			instance_free: class
 		end
 
-	clang_type_visit_fields (t: CXTYPE_STRUCT_API; visitor: POINTER; client_data: POINTER): INTEGER
+	clang_type_visit_fields (t: CXTYPE_STRUCT_API; visitor: POINTER; client_data: POINTER): INTEGER 
 		do
 			Result := c_clang_type_visit_fields (t.item, visitor, client_data)
+		ensure
+			instance_free: class
 		end
 
 feature -- Externals

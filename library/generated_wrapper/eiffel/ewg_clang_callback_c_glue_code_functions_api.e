@@ -12,6 +12,8 @@ feature -- Access
 	set_cxcursor_visitor_object (a_class: POINTER) 
 		do
 			c_set_cxcursor_visitor_object (a_class)
+		ensure
+			instance_free: class
 		end
 
 	release_cxcursor_visitor_object
@@ -53,21 +55,29 @@ feature -- Access
 	set_cxcursor_visitor_entry_1 (a_feature: POINTER) 
 		do
 			c_set_cxcursor_visitor_entry_1 (a_feature)
+		ensure
+			instance_free: class
 		end
 
 	set_cxcursor_visitor_entry_2 (a_feature: POINTER) 
 		do
 			c_set_cxcursor_visitor_entry_2 (a_feature)
+		ensure
+			instance_free: class
 		end
 
 	set_cxcursor_visitor_entry_3 (a_feature: POINTER) 
 		do
 			c_set_cxcursor_visitor_entry_3 (a_feature)
+		ensure
+			instance_free: class
 		end
 
 	call_cxcursor_visitor (a_function: POINTER; cursor: CXCURSOR_STRUCT_API; parent: CXCURSOR_STRUCT_API; client_data: POINTER): INTEGER 
 		do
 			Result := c_call_cxcursor_visitor (a_function, cursor.item, parent.item, client_data)
+		ensure
+			instance_free: class
 		end
 
 feature -- Externals

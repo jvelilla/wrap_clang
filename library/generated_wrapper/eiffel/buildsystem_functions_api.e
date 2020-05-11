@@ -35,26 +35,36 @@ feature -- Access
 			create virtualpath_c_string.make (virtualpath)
 			create realpath_c_string.make (realpath)
 			Result := c_clang_virtual_file_overlay_add_file_mapping (anonymous_1.item, virtualpath_c_string.item, realpath_c_string.item)
+		ensure
+			instance_free: class
 		end
 
 	clang_virtual_file_overlay_set_case_sensitivity (anonymous_1: CXVIRTUAL_FILE_OVERLAY_IMPL_STRUCT_API; casesensitive: INTEGER): INTEGER 
 		do
 			Result := c_clang_virtual_file_overlay_set_case_sensitivity (anonymous_1.item, casesensitive)
+		ensure
+			instance_free: class
 		end
 
 	clang_virtual_file_overlay_write_to_buffer (anonymous_1: CXVIRTUAL_FILE_OVERLAY_IMPL_STRUCT_API; options: INTEGER; out_buffer_ptr: POINTER; out_buffer_size: POINTER): INTEGER 
 		do
 			Result := c_clang_virtual_file_overlay_write_to_buffer (anonymous_1.item, options, out_buffer_ptr, out_buffer_size)
+		ensure
+			instance_free: class
 		end
 
 	clang_free (buffer: POINTER) 
 		do
 			c_clang_free (buffer)
+		ensure
+			instance_free: class
 		end
 
 	clang_virtual_file_overlay_dispose (anonymous_1: CXVIRTUAL_FILE_OVERLAY_IMPL_STRUCT_API) 
 		do
 			c_clang_virtual_file_overlay_dispose (anonymous_1.item)
+		ensure
+			instance_free: class
 		end
 
 	clang_module_map_descriptor_create (options: INTEGER): POINTER
@@ -72,6 +82,8 @@ feature -- Access
 		do
 			create name_c_string.make (name)
 			Result := c_clang_module_map_descriptor_set_framework_module_name (anonymous_1.item, name_c_string.item)
+		ensure
+			instance_free: class
 		end
 
 	clang_module_map_descriptor_set_umbrella_header (anonymous_1: CXMODULE_MAP_DESCRIPTOR_IMPL_STRUCT_API; name: STRING): INTEGER 
@@ -80,16 +92,22 @@ feature -- Access
 		do
 			create name_c_string.make (name)
 			Result := c_clang_module_map_descriptor_set_umbrella_header (anonymous_1.item, name_c_string.item)
+		ensure
+			instance_free: class
 		end
 
 	clang_module_map_descriptor_write_to_buffer (anonymous_1: CXMODULE_MAP_DESCRIPTOR_IMPL_STRUCT_API; options: INTEGER; out_buffer_ptr: POINTER; out_buffer_size: POINTER): INTEGER 
 		do
 			Result := c_clang_module_map_descriptor_write_to_buffer (anonymous_1.item, options, out_buffer_ptr, out_buffer_size)
+		ensure
+			instance_free: class
 		end
 
 	clang_module_map_descriptor_dispose (anonymous_1: CXMODULE_MAP_DESCRIPTOR_IMPL_STRUCT_API) 
 		do
 			c_clang_module_map_descriptor_dispose (anonymous_1.item)
+		ensure
+			instance_free: class
 		end
 
 feature -- Externals
