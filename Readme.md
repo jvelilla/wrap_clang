@@ -7,7 +7,8 @@ using [WrapC](https://github.com/eiffel-wrap-c/WrapC) tool.
 
 *  [WrapC](https://github.com/eiffel-wrap-c/WrapC) tool.
 *  [Clang C API](https://clang.llvm.org/).
-Quirc is a C library for scanning QR codes.
+LibClang is a stable high level C interface to clang.
+https://clang.llvm.org/docs/index.html#using-clang-as-a-library
 
 ## Download and  Install
 
@@ -35,5 +36,5 @@ and run
 
 	`finish_freezing --library`
 
-It will copy the C lib `eif_libquirc.a` or `eif_libquirc.lib` under the library root `$ECF_CONFIG_PATH/C/spec/$(ISE_PLATFORM)/lib/`
+It will copy the C lib `eif_libclang.a` or `eif_libclang.lib` under the library root `$ECF_CONFIG_PATH/C/spec/$(ISE_PLATFORM)/lib/`
 
