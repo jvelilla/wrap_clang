@@ -27,7 +27,7 @@ feature -- Access
 			]"
 		end
 
-	clang_virtual_file_overlay_add_file_mapping (anonymous_1: CXVIRTUAL_FILE_OVERLAY_IMPL_STRUCT_API; virtualpath: STRING; realpath: STRING): INTEGER 
+	clang_virtual_file_overlay_add_file_mapping (anonymous_1: CXVIRTUAL_FILE_OVERLAY_IMPL_STRUCT_API; virtualpath: STRING_8; realpath: STRING_8): INTEGER 
 		local
 			virtualpath_c_string: C_STRING
 			realpath_c_string: C_STRING
@@ -76,7 +76,7 @@ feature -- Access
 			]"
 		end
 
-	clang_module_map_descriptor_set_framework_module_name (anonymous_1: CXMODULE_MAP_DESCRIPTOR_IMPL_STRUCT_API; name: STRING): INTEGER 
+	clang_module_map_descriptor_set_framework_module_name (anonymous_1: CXMODULE_MAP_DESCRIPTOR_IMPL_STRUCT_API; name: STRING_8): INTEGER 
 		local
 			name_c_string: C_STRING
 		do
@@ -86,7 +86,7 @@ feature -- Access
 			instance_free: class
 		end
 
-	clang_module_map_descriptor_set_umbrella_header (anonymous_1: CXMODULE_MAP_DESCRIPTOR_IMPL_STRUCT_API; name: STRING): INTEGER 
+	clang_module_map_descriptor_set_umbrella_header (anonymous_1: CXMODULE_MAP_DESCRIPTOR_IMPL_STRUCT_API; name: STRING_8): INTEGER 
 		local
 			name_c_string: C_STRING
 		do

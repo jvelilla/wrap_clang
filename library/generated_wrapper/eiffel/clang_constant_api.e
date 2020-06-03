@@ -11,7 +11,7 @@ feature -- Access
 
 	cindex_version_major: INTEGER_64 = 0
 
-	cindex_version_minor: INTEGER_64 = 50
+	cindex_version_minor: INTEGER_64 = 59
 
  
 -- The constant clocks_per_sec-- needs to be wrapped by hand 

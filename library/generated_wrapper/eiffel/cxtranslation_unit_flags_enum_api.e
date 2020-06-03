@@ -6,7 +6,7 @@ feature {ANY}
 	is_valid_enum (a_value: INTEGER): BOOLEAN 
 			-- Is `a_value' a valid integer code for this enum ?
 		do
-			Result := a_value = cxtranslationunit_none or a_value = cxtranslationunit_detailedpreprocessingrecord or a_value = cxtranslationunit_incomplete or a_value = cxtranslationunit_precompiledpreamble or a_value = cxtranslationunit_cachecompletionresults or a_value = cxtranslationunit_forserialization or a_value = cxtranslationunit_cxxchainedpch or a_value = cxtranslationunit_skipfunctionbodies or a_value = cxtranslationunit_includebriefcommentsincodecompletion or a_value = cxtranslationunit_createpreambleonfirstparse or a_value = cxtranslationunit_keepgoing or a_value = cxtranslationunit_singlefileparse or a_value = cxtranslationunit_limitskipfunctionbodiestopreamble or a_value = cxtranslationunit_includeattributedtypes or a_value = cxtranslationunit_visitimplicitattributes
+			Result := a_value = cxtranslationunit_none or a_value = cxtranslationunit_detailedpreprocessingrecord or a_value = cxtranslationunit_incomplete or a_value = cxtranslationunit_precompiledpreamble or a_value = cxtranslationunit_cachecompletionresults or a_value = cxtranslationunit_forserialization or a_value = cxtranslationunit_cxxchainedpch or a_value = cxtranslationunit_skipfunctionbodies or a_value = cxtranslationunit_includebriefcommentsincodecompletion or a_value = cxtranslationunit_createpreambleonfirstparse or a_value = cxtranslationunit_keepgoing or a_value = cxtranslationunit_singlefileparse or a_value = cxtranslationunit_limitskipfunctionbodiestopreamble or a_value = cxtranslationunit_includeattributedtypes or a_value = cxtranslationunit_visitimplicitattributes or a_value = cxtranslationunit_ignorenonerrorsfromincludedfiles or a_value = cxtranslationunit_retainexcludedconditionalblocks
 		end
 
 	cxtranslationunit_none: INTEGER 
@@ -112,6 +112,20 @@ feature {ANY}
 			"C inline use <Index.h>"
 		alias
 			"CXTranslationUnit_VisitImplicitAttributes"
+		end
+
+	cxtranslationunit_ignorenonerrorsfromincludedfiles: INTEGER 
+		external
+			"C inline use <Index.h>"
+		alias
+			"CXTranslationUnit_IgnoreNonErrorsFromIncludedFiles"
+		end
+
+	cxtranslationunit_retainexcludedconditionalblocks: INTEGER 
+		external
+			"C inline use <Index.h>"
+		alias
+			"CXTranslationUnit_RetainExcludedConditionalBlocks"
 		end
 
 end

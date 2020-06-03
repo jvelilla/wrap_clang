@@ -10,7 +10,7 @@ inherit
 
 	MEMORY_STRUCTURE
 
-	
+
 create
 
 	make,
@@ -18,7 +18,7 @@ create
 
 feature -- Measurement
 
-	structure_size: INTEGER 
+	structure_size: INTEGER
 		do
 			Result := sizeof_external
 		end
@@ -45,7 +45,7 @@ feature {ANY} -- Member Access
 			result_correct: Result = c_ptr_data (item)
 		end
 
-	set_ptr_data (a_value: POINTER) 
+	set_ptr_data (a_value: POINTER)
 			-- Change the value of member `ptr_data` to `a_value`.
 		require
 			exists: exists
@@ -55,9 +55,11 @@ feature {ANY} -- Member Access
 			ptr_data_set: a_value = ptr_data
 		end
 
+
+
 feature {NONE} -- Implementation wrapper for struct CXToken
 
-	sizeof_external: INTEGER 
+	sizeof_external: INTEGER
 		external
 			"C inline use <Index.h>"
 		alias
@@ -86,7 +88,7 @@ feature {NONE} -- Implementation wrapper for struct CXToken
 			]"
 		end
 
-	set_c_ptr_data (an_item: POINTER; a_value: POINTER) 
+	set_c_ptr_data (an_item: POINTER; a_value: POINTER)
 		require
 			an_item_not_null: an_item /= default_pointer
 		external
