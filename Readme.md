@@ -14,10 +14,13 @@ https://clang.llvm.org/docs/index.html#using-clang-as-a-library
 
 ### Linux
 
+	ckpg install llvm[clang]
 
 ### Windows
 Get the pre-built LLVM/clang binaries on Zig's github page:https://github.com/ziglang/zig/wiki/Building-Zig-on-Windows
+or using vckpg 
 
+	vckpg install llvm[clang]:x64-windows
 
 ## Status
 
@@ -25,6 +28,10 @@ Work in progress
 
 
 ## Examples
+
+* [Clang example Parser](examples/01_example)    	`Shows how to use the Clang Parser API`.
+* [Clang example Tokenizer](examples/02_example)  	`Shows how to use create a Tokenizer with Clang API`.
+* [Clang example AST visitor](examples/03_example)  `Shows an AST Vistor example with Clang API.`.
 
 ### How to compile the C library glue code.
 

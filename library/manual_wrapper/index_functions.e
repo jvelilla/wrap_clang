@@ -14,7 +14,18 @@ inherit
 			clang_parse_translation_unit as clang_parse_translation_unit_api,
 			clang_equal_locations as clang_equal_locations_api,
 			clang_range_is_null as clang_range_is_null_api,
-			clang_tokenize as clang_tokenize_api
+			clang_tokenize as clang_tokenize_api,
+			clang_create_translation_unit as clang_create_translation_unit_api,
+			clang_create_translation_unit2 as clang_create_translation_unit2_api,
+			clang_is_attribute as clang_is_attribute_api,
+			clang_is_declaration as clang_is_declaration_api,
+			clang_is_unexposed as clang_is_unexposed_api,
+			clang_is_expression as clang_is_expression_api,
+			clang_is_invalid as clang_is_invalid_api,
+			clang_is_preprocessing as clang_is_preprocessing_api,
+			clang_is_statement as clang_is_statement_api,
+			clang_is_reference as clang_is_reference_api,
+			clang_is_translation_unit as clang_is_translation_unit_api
 		end
 
 feature -- Access
@@ -38,6 +49,33 @@ feature -- Access
 			end
 			if attached c_clang_parse_translation_unit (cidx.item, source_filename_c_string.item, command_line_args, num_command_line_args, l_unsaved_files, num_unsaved_files, options) as l_ptr and then not l_ptr.is_default_pointer then
 				create Result.make_by_pointer (l_ptr)
+			end
+		ensure
+			instance_free: class
+		end
+
+
+	clang_create_translation_unit (cidx: CXINDEX; ast_filename: STRING): detachable CXTRANSLATION_UNIT_IMPL_STRUCT_API
+		local
+			source_filename_c_string: C_STRING
+		do
+			create source_filename_c_string.make (ast_filename)
+			if attached c_clang_create_translation_unit (cidx.item, source_filename_c_string.item) as l_ptr and then not l_ptr.is_default_pointer then
+				create Result.make_by_pointer ( l_ptr )
+			end
+		ensure
+			instance_free: class
+		end
+
+	clang_create_translation_unit2 (cidx: CXINDEX; ast_filename: STRING_8; out_tu: CXTRANSLATION_UNIT_IMPL_STRUCT_API): INTEGER
+		local
+			ast_filename_c_string: C_STRING
+			l_ptr: POINTER
+		do
+			create ast_filename_c_string.make (ast_filename)
+			Result := c_clang_create_translation_unit2 (cidx.item, ast_filename_c_string.item, $l_ptr)
+			if l_ptr /= default_pointer then
+				out_tu.make_by_pointer (l_ptr)
 			end
 		ensure
 			instance_free: class
@@ -95,6 +133,70 @@ feature -- Access
 		ensure
 			instance_free: class
 		end
+
+	clang_is_attribute (anonymous_1: INTEGER): BOOLEAN
+		do
+			Result := c_clang_is_attribute (anonymous_1).to_boolean
+		ensure
+			instance_free: class
+		end
+
+	clang_is_declaration (anonymous_1: INTEGER): BOOLEAN
+		do
+			Result := c_clang_is_declaration (anonymous_1).to_boolean
+		ensure
+			instance_free: class
+		end
+
+	clang_is_unexposed (anonymous_1: INTEGER): BOOLEAN
+		do
+			Result := c_clang_is_unexposed (anonymous_1).to_boolean
+		ensure
+			instance_free: class
+		end
+
+	clang_is_expression (anonymous_1: INTEGER): BOOLEAN
+		do
+			Result := c_clang_is_expression (anonymous_1).to_boolean
+		ensure
+			instance_free: class
+		end
+
+	clang_is_invalid (anonymous_1: INTEGER): BOOLEAN
+		do
+			Result := c_clang_is_invalid (anonymous_1).to_boolean
+		ensure
+			instance_free: class
+		end
+
+	clang_is_preprocessing (anonymous_1: INTEGER): BOOLEAN
+		do
+			Result := c_clang_is_preprocessing (anonymous_1).to_boolean
+		ensure
+			instance_free: class
+		end
+
+	clang_is_reference (anonymous_1: INTEGER): BOOLEAN
+		do
+			Result := c_clang_is_reference (anonymous_1).to_boolean
+		ensure
+			instance_free: class
+		end
+
+	clang_is_statement (anonymous_1: INTEGER): BOOLEAN
+		do
+			Result := c_clang_is_statement (anonymous_1).to_boolean
+		ensure
+			instance_free: class
+		end
+
+	clang_is_translation_unit (anonymous_1: INTEGER): BOOLEAN
+		do
+			Result := c_clang_is_translation_unit (anonymous_1).to_boolean
+		ensure
+			instance_free: class
+		end
+
 
 	token_kind_spelling (a_kind: INTEGER): STRING
 		do
